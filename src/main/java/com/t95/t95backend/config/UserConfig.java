@@ -11,7 +11,6 @@ import com.t95.t95backend.repository.UserRepository;
 
 @Configuration
 public class UserConfig {
-
     @Bean
     CommandLineRunner commandLineRunner(UserRepository userRepository) {
         return Args -> {

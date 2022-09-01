@@ -13,8 +13,8 @@ import javax.persistence.UniqueConstraint;
 //import lombok.NoArgsConstructor;
 //import lombok.Setter;
 
-@Entity(name = "userAccount")
-@Table(name = "userAccount", uniqueConstraints = @UniqueConstraint(name = "user_email_unique", columnNames = "email"))
+@Entity(name = "UserAccount")
+@Table(name = "UserAccount", uniqueConstraints = @UniqueConstraint(name = "user_email_unique", columnNames = "email"))
 public class UserAccount {
 
     @Id
