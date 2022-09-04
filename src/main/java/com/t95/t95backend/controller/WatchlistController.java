@@ -35,4 +35,12 @@ public class WatchlistController {
             ){
         watchlistService.addWatchlist(userId, name);
     }
+
+    @DeleteMapping(path = "{userId}")
+    public void deleteWatchlist(
+            @PathVariable("userId") Long userId,
+            @RequestParam(required = true) String name
+    ){
+        watchlistService.deleteWatchlist(userId, name);
+    }
 }

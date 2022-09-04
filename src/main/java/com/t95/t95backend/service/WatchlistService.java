@@ -26,4 +26,16 @@ public class WatchlistService {
         Watchlist watchlist = new Watchlist(name, userId);
         watchlistRepository.save(watchlist);
     }
+
+    public void deleteWatchlist(Long userId, String name) {
+        boolean exists = watchlistRepository.existsByNameAndUserId(name, userId);
+
+        if(!exists) {
+            throw new IllegalStateException("watchlist does not exist!");
+        }
+
+        int id = watchlistRepository.findIdByNameAndUserId(name, userId);
+        Long idLong = Long.valueOf(id);
+        watchlistRepository.deleteById(idLong);
+    }
 }
