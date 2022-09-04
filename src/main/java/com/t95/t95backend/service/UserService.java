@@ -1,6 +1,6 @@
 package com.t95.t95backend.service;
 
-import com.t95.t95backend.entity.UserAccount;
+import com.t95.t95backend.entity.User;
 import com.t95.t95backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,10 +21,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<UserAccount> getUsers() { return userRepository.findAll(); }
+    public List<User> getUsers() { return userRepository.findAll(); }
 
-    public void addNewUser(UserAccount user) {
-        Optional<UserAccount> userOptional = userRepository.findUserByEmail(user.getEmail());
+    public void addNewUser(User user) {
+        Optional<User> userOptional = userRepository.findUserByEmail(user.getEmail());
 
         if (userOptional.isPresent()) {
             throw new IllegalStateException("email taken");
@@ -41,28 +41,24 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(Long userId, String firstName, String lastName, String email, Integer age) {
-        UserAccount user = userRepository.findById(userId)
+    public void updateUser(Long userId, String name, String password, String email) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalStateException("user with id: " + userId + " does not exist!"));
 
-        if(firstName != null && firstName.length() > 0 && !Objects.equals(user.getFirstName(), firstName)) {
-            user.setFirstName(firstName);
+        if(name != null && name.length() > 0 && !Objects.equals(user.getName(), name)) {
+            user.setName(name);
         }
 
-        if(lastName != null && lastName.length() > 0 && !Objects.equals(user.getLastName(), lastName)) {
-            user.setLastName(lastName);
+        if(password != null && password.length() > 0 && !Objects.equals(user.getPassword(), password)) {
+            user.setPassword(password);
         }
 
         if(email != null && email.length() > 0 && !Objects.equals(user.getEmail(), email)) {
-            Optional<UserAccount> userOptional = userRepository.findUserByEmail(email);
+            Optional<User> userOptional = userRepository.findUserByEmail(email);
             if(userOptional.isPresent()) {
                 throw new IllegalStateException("email is taken!");
             }
             user.setEmail(email);
-        }
-
-        if(age != null && age > 0 && !Objects.equals(user.getAge(), age)) {
-            user.setAge(age);
         }
     }
 }
