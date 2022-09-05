@@ -1,11 +1,12 @@
 package com.t95.t95backend.repository;
 
-import com.t95.t95backend.entity.Watchlist;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
+import com.t95.t95backend.entity.WatchedStock;
+import com.t95.t95backend.entity.Watchlist;
 
 public interface WatchlistRepository extends JpaRepository<Watchlist, Long> {
 
@@ -15,6 +16,7 @@ public interface WatchlistRepository extends JpaRepository<Watchlist, Long> {
     @Query(value = "SELECT CASE WHEN count(e) > 0 THEN true ELSE false END FROM watchlists e where e.name = ?1 and e.user_id = ?2", nativeQuery = true)
     boolean existsByNameAndUserId(String name, Long userId);
 
-    @Query(value = "select id from watchlists e where e.name = ?1 and e.user_id = ?2", nativeQuery = true)
-    int findIdByNameAndUserId(String name, Long userId);
+    @Query(value = "select * from watchlists e where e.name = ?1 and e.user_id = ?2", nativeQuery = true)
+    Watchlist findByNameAndUserId(String name, Long userId);
+	
 }

@@ -1,11 +1,12 @@
 package com.t95.t95backend.service;
 
-import com.t95.t95backend.entity.Watchlist;
-import com.t95.t95backend.repository.WatchlistRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.t95.t95backend.entity.Watchlist;
+import com.t95.t95backend.repository.WatchlistRepository;
 
 @Service
 public class WatchlistService {
@@ -28,14 +29,13 @@ public class WatchlistService {
     }
 
     public void deleteWatchlist(Long userId, String name) {
-        boolean exists = watchlistRepository.existsByNameAndUserId(name, userId);
-
-        if(!exists) {
-            throw new IllegalStateException("watchlist does not exist!");
+    	Watchlist watchlist = watchlistRepository.findByNameAndUserId(name, userId);
+    	
+        if(watchlist == null) {
+        	throw new IllegalStateException("watchlist does not exist!");
         }
-
-        int id = watchlistRepository.findIdByNameAndUserId(name, userId);
-        Long idLong = Long.valueOf(id);
-        watchlistRepository.deleteById(idLong);
+        
+        watchlistRepository.deleteById(watchlist.getId());
     }
+
 }

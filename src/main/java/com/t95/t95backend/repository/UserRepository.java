@@ -1,10 +1,11 @@
 package com.t95.t95backend.repository;
 
 
-import com.t95.t95backend.entity.User;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+import com.t95.t95backend.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long>{
 

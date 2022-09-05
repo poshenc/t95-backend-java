@@ -1,6 +1,12 @@
 package com.t95.t95backend.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity(name = "watched_stocks")
 @Table(name = "watched_stocks")
@@ -21,8 +27,15 @@ public class WatchedStock {
 
     public WatchedStock() {
     }
+    
+    public WatchedStock(Long id, Long watchlistId, Long stockId) {
+		super();
+		this.id = id;
+		this.watchlistId = watchlistId;
+		this.stockId = stockId;
+	}
 
-    public WatchedStock(Long watchlistId, Long stockId) {
+	public WatchedStock(Long watchlistId, Long stockId) {
         this.watchlistId = watchlistId;
         this.stockId = stockId;
     }
