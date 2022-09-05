@@ -7,19 +7,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.t95.t95backend.service.WatchedStockService;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @RestController
 @RequestMapping(path = "api/watchedStocks")
 public class WatchedStockController {
-	
 	private final WatchedStockService watchedStockService;
 
 	@Autowired
@@ -39,12 +39,14 @@ public class WatchedStockController {
 			HashMap<String, String> map = new HashMap<String, String>();
 			
 			map.put("name", watchedStock.get("name").toString());
-			map.put("stock_code", watchedStock.get("stock_code").toString());
+			map.put("symbol", watchedStock.get("stock_code").toString());
 			map.put("price", watchedStock.get("price").toString());
-			map.put("movement_points", watchedStock.get("movement_points").toString());
-			map.put("movement_percentage", watchedStock.get("movement_percentage").toString());
+			map.put("movementPrice", watchedStock.get("movement_points").toString());
+			map.put("movementPercentage", watchedStock.get("movement_percentage").toString());
 			returnWatchlist.add(map);
 		}
+
+
 //    	return returnWatchlist;
     	return ResponseEntity.status(HttpStatus.OK).body(returnWatchlist);
 //        return watchedStockService.getWatchedStockByWatchlistId(watchlistId);

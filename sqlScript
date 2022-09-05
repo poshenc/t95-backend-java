@@ -7,10 +7,15 @@ CREATE TABLE IF NOT EXISTS stocks (
 	movement_percentage VARCHAR ( 255 ) NOT NULL
 );
 
-INSERT INTO stocks VALUES (1,'Telsa','TSLA', '120', '+10.2', '+1.2%');
-INSERT INTO stocks VALUES (2,'Apple','APPL', '140', '+14.2', '+3.2%');
-INSERT INTO stocks VALUES (3,'Navidia','NVDA', '150', '+15.2', '-1.2%');
-INSERT INTO stocks VALUES (4,'台積電','2330', '450', '+45.2', '+8.2%');
+INSERT INTO stocks (name,stock_code,price,movement_points,movement_percentage) values ('Telsa','TSLA', '120', '+10.2', '+1.2%');
+INSERT INTO stocks (name,stock_code,price,movement_points,movement_percentage) values ('Apple','APPL', '140', '+14.2', '+3.2%');
+INSERT INTO stocks (name,stock_code,price,movement_points,movement_percentage) values ('Navidia','NVDA', '150', '+15.2', '-1.2%');
+INSERT INTO stocks (name,stock_code,price,movement_points,movement_percentage) values ('台積電','2330', '450', '+25.2', '+6.4%');
+INSERT INTO stocks (name,stock_code,price,movement_points,movement_percentage) values ('聯華','1550', '25', '+45.2', '+5.2%');
+INSERT INTO stocks (name,stock_code,price,movement_points,movement_percentage) values ('聯發科','5510', '832', '+95.2', '+0.2%');
+INSERT INTO stocks (name,stock_code,price,movement_points,movement_percentage) values ('ETH','15510', '62', '+25.2', '+3.6%');
+INSERT INTO stocks (name,stock_code,price,movement_points,movement_percentage) values ('ADA','543', '735', '+15.2', '+1.2%');
+INSERT INTO stocks (name,stock_code,price,movement_points,movement_percentage) values ('BTC','21444', '832', '+85.2', '+0.1%');
 
 
 CREATE TABLE IF NOT EXISTS users (
@@ -51,3 +56,8 @@ insert into watched_stocks (watchlist_id, stock_id) values ('1','1');
 insert into watched_stocks (watchlist_id, stock_id) values ('1','2');
 insert into watched_stocks (watchlist_id, stock_id) values ('1','3');
 insert into watched_stocks (watchlist_id, stock_id) values ('2','4');
+insert into watched_stocks (watchlist_id, stock_id) values ('2','5');
+insert into watched_stocks (watchlist_id, stock_id) values ('2','6');
+insert into watched_stocks (watchlist_id, stock_id) values ('3','7');
+insert into watched_stocks (watchlist_id, stock_id) values ('3','8');
+insert into watched_stocks (watchlist_id, stock_id) values ('3','9');
