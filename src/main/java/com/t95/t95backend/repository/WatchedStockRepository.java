@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import com.t95.t95backend.entity.WatchedStock;
@@ -17,6 +18,14 @@ public interface WatchedStockRepository extends JpaRepository<WatchedStock, Long
 			+ "ON ws.stock_id = s.id "
 			+ "WHERE ws.watchlist_id = ?1 ", nativeQuery = true)
 	List<Map> getWatchedStockByWatchlistId(Long watchlistId);
+
+	@Modifying
+	@Query(value = "INSERT INTO watched_stocks (watchlist_id, stock_id) VALUES ( ?1, ?2 )", nativeQuery = true)
+	public Integer addNewWatchedStock(Long watchlistId, Long stockId);
+
+	@Modifying
+	@Query(value = "DELETE FROM watched_stocks WHERE watchlist_id= ?1 AND stock_id= ?2", nativeQuery = true)
+	public void deleteWatchedStock(Long watchlistId, Long stockId);
 	
 
 }

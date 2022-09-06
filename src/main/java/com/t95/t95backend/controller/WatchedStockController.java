@@ -1,21 +1,24 @@
 package com.t95.t95backend.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.t95.t95backend.service.WatchedStockService;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @RestController
 @RequestMapping(path = "api/watchedStocks")
@@ -46,12 +49,27 @@ public class WatchedStockController {
 			returnWatchlist.add(map);
 		}
 
-
-//    	return returnWatchlist;
     	return ResponseEntity.status(HttpStatus.OK).body(returnWatchlist);
-//        return watchedStockService.getWatchedStockByWatchlistId(watchlistId);
     }
 	
+    @Transactional
+    @PostMapping(path = "{watchlistId}")
+    public void addNewWatchedStock(
+            @PathVariable("watchlistId") Long watchlistId,
+            @RequestParam(required = true) Long stockId
+            ){
+    	watchedStockService.addNewWatchedStock(watchlistId, stockId);
+    }
+    
+    @Transactional
+    @DeleteMapping(path = "{watchlistId}")
+    public ResponseEntity deleteWatchedStock(
+    		@PathVariable("watchlistId") Long watchlistId,
+            @RequestParam(required = true) Long stockId
+    		) {
+    	watchedStockService.deleteWatchedStock(watchlistId, stockId);
+    	return ResponseEntity.status(HttpStatus.OK).body("\"success delete watched stock.\"");
+    }
 	
 
 }
