@@ -31,6 +31,12 @@ public class Stock {
     public Stock() {
     }
 
+    public Stock(Long id, String name, String stockCode) {
+        this.id = id;
+        this.name = name;
+        this.stockCode = stockCode;
+    }
+
     public Stock(String name, String stockCode, String price, String movementPoints, String movementPercentage) {
         this.name = name;
         this.stockCode = stockCode;
