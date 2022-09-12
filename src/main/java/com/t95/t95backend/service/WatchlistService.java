@@ -21,7 +21,8 @@ public class WatchlistService {
     public List<Watchlist> getWatchlists() { return watchlistRepository.findAll(); }
 
     public List<Watchlist> getWatchlistsByUserId(Long userId) {
-        return watchlistRepository.getWatchlistsByUserId(userId); }
+    	return watchlistRepository.findByUserId(userId);
+    }
 
     public void addWatchlist(Long userId, String name) {
         Watchlist watchlist = new Watchlist(name, userId);
