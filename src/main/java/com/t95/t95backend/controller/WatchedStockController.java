@@ -44,7 +44,7 @@ public class WatchedStockController {
 			map.put("name", watchedStock.get("name").toString());
 			map.put("symbol", watchedStock.get("stock_code").toString());
 			map.put("price", watchedStock.get("price").toString());
-			map.put("movementPrice", watchedStock.get("movement_points").toString());
+			map.put("movementPoints", watchedStock.get("movement_points").toString());
 			map.put("movementPercentage", watchedStock.get("movement_percentage").toString());
 			returnWatchlist.add(map);
 		}
