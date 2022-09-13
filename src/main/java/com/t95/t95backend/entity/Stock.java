@@ -1,9 +1,16 @@
 package com.t95.t95backend.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity(name = "stocks")
-@Table(name = "stocks", uniqueConstraints = @UniqueConstraint(name = "stock_code_unique", columnNames = "stock_code"))
+@Table(name = "stocks", uniqueConstraints = @UniqueConstraint(name = "symbol_unique", columnNames = "symbol"))
 
 public class Stock {
     @Id
@@ -16,8 +23,8 @@ public class Stock {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "stock_code", nullable = false)
-    private String stockCode;
+    @Column(name = "symbol", nullable = false)
+    private String symbol;
 
     @Column(name = "price", nullable = false)
     private String price;
@@ -31,15 +38,15 @@ public class Stock {
     public Stock() {
     }
 
-    public Stock(Long id, String name, String stockCode) {
+    public Stock(Long id, String name, String symbol) {
         this.id = id;
         this.name = name;
-        this.stockCode = stockCode;
+        this.symbol = symbol;
     }
 
-    public Stock(String name, String stockCode, String price, String movementPoints, String movementPercentage) {
+    public Stock(String name, String symbol, String price, String movementPoints, String movementPercentage) {
         this.name = name;
-        this.stockCode = stockCode;
+        this.symbol = symbol;
         this.price = price;
         this.movementPoints = movementPoints;
         this.movementPercentage = movementPercentage;
@@ -61,12 +68,12 @@ public class Stock {
         this.name = name;
     }
 
-    public String getStockCode() {
-        return stockCode;
+    public String getSymbol() {
+        return symbol;
     }
 
-    public void setStockCode(String stockCode) {
-        this.stockCode = stockCode;
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 
     public String getPrice() {
@@ -98,7 +105,7 @@ public class Stock {
         return "Stocks{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", stockCode='" + stockCode + '\'' +
+                ", symbol='" + symbol + '\'' +
                 ", price='" + price + '\'' +
                 ", movementPoints='" + movementPoints + '\'' +
                 ", movementPercentage='" + movementPercentage + '\'' +

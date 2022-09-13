@@ -39,4 +39,5 @@ public class WatchlistService {
         watchlistRepository.deleteById(watchlist.getId());
     }
 
+
 }

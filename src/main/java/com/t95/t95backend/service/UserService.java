@@ -1,14 +1,15 @@
 package com.t95.t95backend.service;
 
-import com.t95.t95backend.entity.User;
-import com.t95.t95backend.repository.UserRepository;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import com.t95.t95backend.entity.User;
+import com.t95.t95backend.repository.UserRepository;
 
 @Service
 public class UserService {

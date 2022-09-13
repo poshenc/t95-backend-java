@@ -1,12 +1,13 @@
 package com.t95.t95backend.service;
 
-import com.t95.t95backend.entity.Stock;
-import com.t95.t95backend.repository.StockRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.t95.t95backend.entity.Stock;
+import com.t95.t95backend.repository.StockRepository;
 
 @Service
 public class StockService {
@@ -20,8 +21,28 @@ public class StockService {
     public List<Map> getStocksList() {
         return stockRepository.getStocksList();
     }
+    
+	public Optional<Stock> findStockBySymbol(String symbol) {
+		return stockRepository.findStockBySymbol(symbol);
+	}
 
-    public Optional<Stock> getStocksById(Long stockId) {
-        return stockRepository.findById(stockId);
-    }
+	public List<Stock> getWatchedStockByWatchlistId(Long watchlistId) {
+		return stockRepository.getWatchedStockByWatchlistId(watchlistId);
+	}
+	
+	public Boolean findWatchedPair(Long watchlistId, Long stockId) {
+		return stockRepository.findWatchedPair(watchlistId, stockId);
+	}
+
+	public Integer addNewWatchedStock(Long watchlistId, Long stockId) {
+		return stockRepository.addNewWatchedStock(watchlistId, stockId);		
+	}
+
+	public void deleteWatchedStock(Long watchlistId, Long stockId) {
+		stockRepository.deleteWatchedStock(watchlistId, stockId);		
+	}
+
+	
+
+
 }
