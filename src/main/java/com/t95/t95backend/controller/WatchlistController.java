@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,35 +32,47 @@ public class WatchlistController {
 
     //get all watchLists
     @GetMapping(path = "/users")
-    public List<Watchlist> getWatchlists() {
-        return watchlistService.getWatchlists();
+    public ResponseEntity getWatchlists() {    	
+    	List<Watchlist> watchlist = watchlistService.getWatchlists();
+    	return ResponseEntity.status(HttpStatus.OK).body(watchlist);
     }       
 
     //get all watchLists by user
     @GetMapping(path = "/users/{userId}")
-    public List<Watchlist> getWatchlistsByUserId(@PathVariable("userId") Long userId) {
+    public ResponseEntity getWatchlistsByUserId(@PathVariable("userId") Long userId) {
     	List<Watchlist> watchlists = watchlistService.getWatchlistsByUserId(userId);
     	
     	if(watchlists.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);    	
-    	return watchlists;
+    	return ResponseEntity.status(HttpStatus.OK).body(watchlists);
     }
 
     //add new watchList by user
     @PostMapping(path = "/users/{userId}")
-    public void addNewWatchlist(
+    public ResponseEntity addNewWatchlist(
             @PathVariable("userId") Long userId,
             @RequestParam(required = true) String name
             ){
-        watchlistService.addWatchlist(userId, name);
+    	try {
+    		watchlistService.addWatchlist(userId, name);
+    		return ResponseEntity.status(HttpStatus.CREATED).body("Success added new watchlist.");    		
+    	} catch (Exception e) {
+    		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    	}    	
+        
     }
 
     //delete watchList by user
     @DeleteMapping(path = "/users/{userId}")
-    public void deleteWatchlist(
+    public ResponseEntity deleteWatchlist(
             @PathVariable("userId") Long userId,
             @RequestParam(required = true) String name
     ){
-        watchlistService.deleteWatchlist(userId, name);
+    	try {
+    		watchlistService.deleteWatchlist(userId, name);
+    		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Success deleted watchlist.");    		
+    	} catch (Exception e) {
+    		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    	}
     }
         
 }

@@ -3,6 +3,8 @@ package com.t95.t95backend.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,29 +32,34 @@ public class UserController {
 
     //get list of all users
     @GetMapping
-    public List<User> getUsers() {
-        return userService.getUsers();
+    public ResponseEntity getUsers() {
+    	List<User> users = userService.getUsers();        
+        return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
     //sign up
     @PostMapping
-    public void registerNewUser(@RequestBody User user) {
-        userService.addNewUser(user);
+    public ResponseEntity registerNewUser(@RequestBody User user) {
+    	userService.addNewUser(user);
+    	return ResponseEntity.status(HttpStatus.CREATED).body("success created user");
     }
 
     //delete user
     @DeleteMapping(path = "{userId}")
-    public void deleteUser(@PathVariable("userId") Long userId) {
+    public ResponseEntity deleteUser(@PathVariable("userId") Long userId) {
         userService.deleteUser(userId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("success deleted user");
     }
 
     //edit user profile
     @PutMapping(path = "{userId}")
-    public void updateUser(
+    public ResponseEntity updateUser(
             @PathVariable("userId") Long userId,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String password,
             @RequestParam(required = false) String email) {
         userService.updateUser(userId, name, password, email);
+        return ResponseEntity.status(HttpStatus.OK).body("success updated user");
+        
     }
 }

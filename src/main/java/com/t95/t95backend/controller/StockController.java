@@ -34,17 +34,28 @@ public class StockController {
 
     //get all stocks names and id
     @GetMapping
-    public List<Map> getStocksList() {
-        return stockService.getStocksList();
+    public ResponseEntity getStocksList() {
+    	try {
+    		List<Map> list = stockService.getStocksList();
+    		return ResponseEntity.status(HttpStatus.OK).body(list);
+    		
+    	} catch (Exception e) {
+    		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    	}
     }
 
     //get a stock current price and movements
     @GetMapping(path = "{symbol}")
-    public Optional<Stock> findStockBySymbol(@PathVariable("symbol") String symbol) {
-    	Optional<Stock> stock = stockService.findStockBySymbol(symbol);
-    	
-    	if(stock.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);    	
-    	return stock;
+    public ResponseEntity findStockBySymbol(@PathVariable("symbol") String symbol) {
+    	try {
+    		Optional<Stock> stock = stockService.findStockBySymbol(symbol);
+        	
+        	if(stock.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    		return ResponseEntity.status(HttpStatus.OK).body(stock);
+    		
+    	} catch (Exception e) {
+    		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    	}
     }
         
     // ************************* stocks current price and movements in watchLists *******************************
@@ -53,10 +64,16 @@ public class StockController {
     @GetMapping(path = "/watchlists/{watchlistId}")
     public ResponseEntity getWatchedStocksByWatchlistId(
     		@PathVariable("watchlistId") Long watchlistId) {
-    	List<Stock> watchedStocks = stockService.getWatchedStockByWatchlistId(watchlistId);
+    	try {
+    		List<Stock> watchedStocks = stockService.getWatchedStockByWatchlistId(watchlistId);
+        	
+    		if(watchedStocks.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);    
+    		return ResponseEntity.status(HttpStatus.OK).body(watchedStocks);    		
+    	} catch (Exception e) {
+    		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    	}
     	
-    	if(watchedStocks.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);    	
-    	return ResponseEntity.status(HttpStatus.OK).body(watchedStocks);
+    	
 //    	List<HashMap<String, String>> returnWatchlist = new ArrayList<HashMap<String, String>>();
 //
 //		for (Stock watchedStock : watchedStocks) {
@@ -90,7 +107,7 @@ public class StockController {
     		
     	} catch (Exception e) {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-    	}    	
+    	}   
     }
     
     
@@ -108,7 +125,7 @@ public class StockController {
     			return ResponseEntity.status(HttpStatus.CONFLICT).body("Stock does not exist in watchlist.");
     		} else {
     			stockService.deleteWatchedStock(watchlistId, stockId);
-    			return ResponseEntity.status(HttpStatus.OK).body("Success delete watched stock.");   			
+    			return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Success delete watched stock.");   			
     		}
     		
     	} catch (Exception e) {
