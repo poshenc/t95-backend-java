@@ -44,5 +44,9 @@ public class WatchlistService {
         watchlistRepository.deleteById(watchlist.getId());
     }
 
+    public Watchlist findByNameAndUserId(String name, Long userId) {
+        return watchlistRepository.findByNameAndUserId(name, userId);
+    }
+
 
 }
