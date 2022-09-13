@@ -25,6 +25,11 @@ public class WatchlistService {
     }
 
     public void addWatchlist(Long userId, String name) {
+    	Watchlist exisitngWatchlist = watchlistRepository.findByNameAndUserId(name, userId);
+    	if(exisitngWatchlist != null) {
+        	throw new IllegalStateException("Duplicated watchlist name!");
+        }
+    	
         Watchlist watchlist = new Watchlist(name, userId);
         watchlistRepository.save(watchlist);
     }

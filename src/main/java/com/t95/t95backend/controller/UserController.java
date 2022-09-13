@@ -28,21 +28,25 @@ public class UserController {
         this.userService = userService;
     }
 
+    //get list of all users
     @GetMapping
     public List<User> getUsers() {
         return userService.getUsers();
     }
 
+    //sign up
     @PostMapping
     public void registerNewUser(@RequestBody User user) {
         userService.addNewUser(user);
     }
 
+    //delete user
     @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable("userId") Long userId) {
         userService.deleteUser(userId);
     }
 
+    //edit user profile
     @PutMapping(path = "{userId}")
     public void updateUser(
             @PathVariable("userId") Long userId,
