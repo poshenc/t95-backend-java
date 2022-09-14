@@ -97,10 +97,10 @@ public class StockController {
     	try {
     		Boolean exists = stockService.findWatchedPair(watchlistId, stockId);
         	if(exists) { 
-        		return ResponseEntity.status(HttpStatus.CONFLICT).body("{\"message\":\"Stock already exist in watchlist.\"}");
+        		return ResponseEntity.status(HttpStatus.CONFLICT).body("\"Stock already exist in watchlist.\"");
         	} else {
         		stockService.addNewWatchedStock(watchlistId, stockId);
-        		return ResponseEntity.status(HttpStatus.CREATED).body("{\"message\":\"Success added to watchlist.\"}");
+        		return ResponseEntity.status(HttpStatus.CREATED).body("\"Success added to watchlist.\"");
         	}
     		
     	} catch (Exception e) {
@@ -120,10 +120,10 @@ public class StockController {
     	try {
     		Boolean exists = stockService.findWatchedPair(watchlistId, stockId);
     		if(!exists) {
-    			return ResponseEntity.status(HttpStatus.CONFLICT).body("{\"message\":\"stock does not exist in stocklist\"}");
+    			return ResponseEntity.status(HttpStatus.CONFLICT).body("\"stock does not exist in stocklist\"");
     		} else {
     			stockService.deleteWatchedStock(watchlistId, stockId);
-    			return ResponseEntity.status(HttpStatus.NO_CONTENT).body("{\"message\":\"Success delete watched stock.\"}");
+    			return ResponseEntity.status(HttpStatus.NO_CONTENT).body("\"Success delete watched stock.\"");
     		}
     		
     	} catch (Exception e) {

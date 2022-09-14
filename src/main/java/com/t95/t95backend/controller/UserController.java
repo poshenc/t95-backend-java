@@ -41,14 +41,14 @@ public class UserController {
     @PostMapping
     public ResponseEntity registerNewUser(@RequestBody User user) {
     	userService.addNewUser(user);
-    	return ResponseEntity.status(HttpStatus.CREATED).body("{\"message\":\"success created user\"}");
+    	return ResponseEntity.status(HttpStatus.CREATED).body("\"success created user\"");
     }
 
     //delete user
     @DeleteMapping(path = "{userId}")
     public ResponseEntity deleteUser(@PathVariable("userId") Long userId) {
         userService.deleteUser(userId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("{\"message\":\"success deleted user\"}");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("\"success deleted user\"");
     }
 
     //edit user profile
@@ -59,7 +59,7 @@ public class UserController {
             @RequestParam(required = false) String password,
             @RequestParam(required = false) String email) {
         userService.updateUser(userId, name, password, email);
-        return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"success updated user\"}");
+        return ResponseEntity.status(HttpStatus.OK).body("\"success updated user\"");
         
     }
 }

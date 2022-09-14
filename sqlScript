@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS stocks (
 INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Dow Jones','DOW J', '31581.30', '+436.28', '+1.40%');
 INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('NASDAQ','IXIC', '11791.90', '+247.14', '+2.38%');
 INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('S&P 500','GSPC', '3979.87', '+71.68', '+1.83%');
-INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('USD/TWD','USD/TWD=x', '30.908', '-0.1108', '-0.41%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('USD/TWD','USD/TWD', '30.908', '-0.1108', '-0.41%');
 INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Telsa Inc','TSLA', '283.70', '+9.28', '+3.38%');
 INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Apple','APPL', '155.96', '-14.2', '-3.12%');
 INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Nvidia Corporation','NVDA', '137.14', '+2.53', '+1.88%');

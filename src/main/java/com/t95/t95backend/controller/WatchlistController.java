@@ -54,8 +54,7 @@ public class WatchlistController {
             ){
     	try {
     		watchlistService.addWatchlist(userId, name);
-    		return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"success added watchlist.\"}");
-
+    		return ResponseEntity.status(HttpStatus.OK).body("\"success added watchlist.\"");
     	} catch (Exception e) {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     	}    	
@@ -70,7 +69,7 @@ public class WatchlistController {
     ){
     	try {
     		watchlistService.deleteWatchlist(userId, name);
-    		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("{\"message\":\"success deleted watchlist.\"}");
+    		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("\"success deleted watchlist.\"");
     	} catch (Exception e) {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     	}
