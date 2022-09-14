@@ -8,8 +8,17 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity(name = "watched_stocks")
 @Table(name = "watched_stocks")
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 public class WatchedStock {
 
     @Id
@@ -24,9 +33,6 @@ public class WatchedStock {
 
     @Column(name = "stock_id", nullable = false)
     private Long stockId;
-
-    public WatchedStock() {
-    }
     
     public WatchedStock(Long id, Long watchlistId, Long stockId) {
 		super();
@@ -38,38 +44,5 @@ public class WatchedStock {
 	public WatchedStock(Long watchlistId, Long stockId) {
         this.watchlistId = watchlistId;
         this.stockId = stockId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getWatchlistId() {
-        return watchlistId;
-    }
-
-    public void setWatchlistId(Long watchlistId) {
-        this.watchlistId = watchlistId;
-    }
-
-    public Long getStockId() {
-        return stockId;
-    }
-
-    public void setStockId(Long stockId) {
-        this.stockId = stockId;
-    }
-
-    @Override
-    public String toString() {
-        return "WatchedStock{" +
-                "id=" + id +
-                ", watchlistId=" + watchlistId +
-                ", stockId=" + stockId +
-                '}';
     }
 }

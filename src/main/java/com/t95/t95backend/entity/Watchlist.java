@@ -8,8 +8,17 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity(name = "watchlists")
 @Table(name = "watchlists")
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 public class Watchlist {
 
     @Id
@@ -25,10 +34,6 @@ public class Watchlist {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-
-    public Watchlist() {
-    }
-
     public Watchlist(Long id, String name, Long userId) {
         this.id = id;
         this.name = name;
@@ -38,38 +43,5 @@ public class Watchlist {
     public Watchlist(String name, Long userId) {
         this.name = name;
         this.userId = userId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    @Override
-    public String toString() {
-        return "Watchlist{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", userId=" + userId +
-                '}';
     }
 }
