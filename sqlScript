@@ -47,9 +47,9 @@ CREATE TABLE IF NOT EXISTS watched_stocks (
 	  REFERENCES stocks (id)
 );
 
-insert into users (name,password,email) values ('Johnson','123456','superAdmin@gmail.com');
-insert into users (name,password,email) values ('Albert','123456','admin@gmail.com');
-insert into users (name,password,email) values ('Till','123456','user@gmail.com');
+insert into users (name,password,email) values ('Johnson','77722f04d569b3021df77e8bb2e6b1337813be5c7993d3fef6b172a91d8f1f80','superAdmin@gmail.com');
+insert into users (name,password,email) values ('Albert','77722f04d569b3021df77e8bb2e6b1337813be5c7993d3fef6b172a91d8f1f80','admin@gmail.com');
+insert into users (name,password,email) values ('Till','77722f04d569b3021df77e8bb2e6b1337813be5c7993d3fef6b172a91d8f1f80','user@gmail.com');
 
 insert into watchlists (name,user_id) values ('US stock',1);
 insert into watchlists (name,user_id) values ('TW stock',1);

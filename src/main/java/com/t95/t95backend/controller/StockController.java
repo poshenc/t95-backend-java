@@ -1,5 +1,6 @@
 package com.t95.t95backend.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,16 +22,19 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.t95.t95backend.entity.Stock;
 import com.t95.t95backend.service.StockService;
+import com.t95.t95backend.utils.encryption.JwtTokenUtils;
 
 @RestController
 @RequestMapping(path = "api/stocks")
 public class StockController {
 
     private StockService stockService;
+    private JwtTokenUtils jwtTokenUtils;
 
     @Autowired
-    public StockController(StockService stockService) {
+    public StockController(StockService stockService, JwtTokenUtils jwtTokenUtils) {
         this.stockService = stockService;
+        this.jwtTokenUtils = jwtTokenUtils;
     }
 
     //get all stocks names and id
@@ -46,8 +51,11 @@ public class StockController {
 
     //get a stock current price and movements
     @GetMapping(path = "{symbol}")
-    public ResponseEntity findStockBySymbol(@PathVariable("symbol") String symbol) {
+    public ResponseEntity findStockBySymbol(@RequestHeader("Authorization") String authorization, @PathVariable("symbol") String symbol) {
     	try {
+    		//JWT: verify and parse JWT token includes user info
+    		HashMap<String, Object> userInfo = jwtTokenUtils.getJwtInfo(authorization);
+    		
     		Optional<Stock> stock = stockService.findStockBySymbol(symbol);
         	
         	if(stock.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
