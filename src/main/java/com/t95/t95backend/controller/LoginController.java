@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.t95.t95backend.bean.LoginBean;
 import com.t95.t95backend.entity.User;
+import com.t95.t95backend.returnBean.ReturnUserInfo;
 import com.t95.t95backend.service.UserService;
 import com.t95.t95backend.utils.encryption.JwtTokenUtils;
 import com.t95.t95backend.utils.encryption.SHA256Utils;
@@ -32,8 +33,7 @@ public class LoginController {
     }
 
     @PostMapping("/")
-    public ResponseEntity login(@RequestBody LoginBean loginBean) {
-    	
+    public ResponseEntity login(@RequestBody LoginBean loginBean) {    	
     	// sha256 hashed password and salt
     	String hashedPassword = "";
     	try {
@@ -50,15 +50,17 @@ public class LoginController {
         if(user != null) {
         	
         	//create sessions
-        	Map<String, String> sessions = new HashMap<>();
-        	sessions.put("id", user.getId().toString());
-        	sessions.put("name", user.getName());
+        	ReturnUserInfo sessions = new ReturnUserInfo(user.getName(), user.getId());
+//        	Map<String, Object> sessions = new HashMap<>();
+//        	sessions.put("id", user.getId());
+//        	sessions.put("name", user.getName());
         	
         	//create JWT token
-        	String jwtToken = jwtTokenUtils.generateToken((HashMap<String, String>) sessions);
+        	String jwtToken = jwtTokenUtils.generateToken(sessions);
         	
         	//add JWT Token to sessions
-        	sessions.put("jwt", jwtToken);            
+        	sessions.setJwt(jwtToken);
+//        	sessions.put("jwt", jwtToken);            
             
             return ResponseEntity.status(HttpStatus.OK).body(sessions);
         }

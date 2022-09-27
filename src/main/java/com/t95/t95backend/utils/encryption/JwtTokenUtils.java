@@ -11,6 +11,8 @@ import javax.security.auth.message.AuthException;
 
 import org.springframework.stereotype.Component;
 
+import com.t95.t95backend.returnBean.ReturnUserInfo;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -25,13 +27,12 @@ public class JwtTokenUtils implements Serializable {
 	private static final String SECRET = "T95, all in one wealth managment app.";
 
 	//generate JWT token
-	public String generateToken(HashMap<String, String> userDetails) {
-		Map<String, Object> claims = new HashMap<>();
-		claims.put("name", userDetails.get("name"));
-		claims.put("id", userDetails.get("id"));
+	public String generateToken(ReturnUserInfo userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("name", userDetails.getName());
+        claims.put("id", userDetails.getId());
 	
 		Instant now = Instant.now();	
-	//	System.out.println(now);
 		String jwtToken = Jwts.builder()
 	        .setClaims(claims)
 	        .setExpiration(Date.from(now.plus(100*24*70, ChronoUnit.MINUTES)))
@@ -43,10 +44,12 @@ public class JwtTokenUtils implements Serializable {
 	
 	
 	//Verify JWT and then parse user information
-	public HashMap<String, Object> getJwtInfo(String token) throws AuthException {
+	public ReturnUserInfo getJwtInfo(String token) throws AuthException {
 		try {
 			Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
-			HashMap<String, Object> expectedMap = new HashMap<>(claims);
+			String name = claims.get("name").toString();
+			Long id = ((Number) claims.get("id")).longValue();
+			ReturnUserInfo expectedMap = new ReturnUserInfo(name, id);
 			return expectedMap;
 		} catch (SignatureException e) {
 			throw new AuthException("Invalid JWT signature.");
