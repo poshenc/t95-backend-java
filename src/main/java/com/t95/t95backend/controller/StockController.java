@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.t95.t95backend.entity.Stock;
+import com.t95.t95backend.returnBean.ReturnUserInfo;
 import com.t95.t95backend.service.StockService;
 import com.t95.t95backend.utils.encryption.JwtTokenUtils;
 
@@ -39,8 +40,11 @@ public class StockController {
 
     //get all stocks names and id
     @GetMapping
-    public ResponseEntity getStocksList() {
+    public ResponseEntity getStocksList(@RequestHeader("Authorization") String authorization) {
     	try {
+    		//JWT: verify and parse JWT token includes user info
+    		ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
+    		
     		List<Map> list = stockService.getStocksList();
     		return ResponseEntity.status(HttpStatus.OK).body(list);
     		
@@ -54,7 +58,7 @@ public class StockController {
     public ResponseEntity findStockBySymbol(@RequestHeader("Authorization") String authorization, @PathVariable("symbol") String symbol) {
     	try {
     		//JWT: verify and parse JWT token includes user info
-    		HashMap<String, Object> userInfo = jwtTokenUtils.getJwtInfo(authorization);
+    		ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
     		
     		Optional<Stock> stock = stockService.findStockBySymbol(symbol);
         	
@@ -65,67 +69,62 @@ public class StockController {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     	}
     }
+    
+    
         
     // ************************* stocks current price and movements in watchLists *******************************
     
+    
+    
     //get stocks current price and movements in a watchLists
     @GetMapping(path = "/watchlists/{watchlistId}")
-    public ResponseEntity getWatchedStocksByWatchlistId(
+    public ResponseEntity getWatchedStocksByWatchlistId(@RequestHeader("Authorization") String authorization,
     		@PathVariable("watchlistId") Long watchlistId) {
     	try {
+    		//JWT: verify and parse JWT token includes user info
+    		ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
+    		
     		List<Stock> watchedStocks = stockService.getWatchedStockByWatchlistId(watchlistId);
     		return ResponseEntity.status(HttpStatus.OK).body(watchedStocks);    		
     	} catch (Exception e) {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     	}
-    	
-    	
-//    	List<HashMap<String, String>> returnWatchlist = new ArrayList<HashMap<String, String>>();
-//
-//		for (Stock watchedStock : watchedStocks) {
-//			HashMap<String, String> map = new HashMap<String, String>();
-//			
-//			map.put("name", watchedStock.getName());
-//			map.put("symbol", watchedStock.getStockCode());
-//			map.put("price", watchedStock.getPrice());
-//			map.put("movementPoints", watchedStock.getMovementPoints());
-//			map.put("movementPercentage", watchedStock.getMovementPercentage());
-//			returnWatchlist.add(map);
-//		}
-
     }
     
     //add stock to a watchList
     @Transactional
     @PostMapping(path = "/watchlists/{watchlistId}")
-    public ResponseEntity addNewWatchedStock(
+    public ResponseEntity addNewWatchedStock(@RequestHeader("Authorization") String authorization,
             @PathVariable("watchlistId") Long watchlistId,
             @RequestParam(required = true) Long stockId
             ){
     	try {
+    		//JWT: verify and parse JWT token includes user info
+    		ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
+    		
     		Boolean exists = stockService.findWatchedPair(watchlistId, stockId);
         	if(exists) { 
         		return ResponseEntity.status(HttpStatus.CONFLICT).body("\"Stock already exist in watchlist.\"");
         	} else {
         		stockService.addNewWatchedStock(watchlistId, stockId);
         		return ResponseEntity.status(HttpStatus.CREATED).body("\"Success added to watchlist.\"");
-        	}
-    		
+        	}    		
     	} catch (Exception e) {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     	}   
-    }
-    
-    
+    }    
     
     //remove a stock from watchList
     @Transactional
     @DeleteMapping(path = "/watchlists/{watchlistId}")
-    public ResponseEntity deleteWatchedStock(
+    public ResponseEntity deleteWatchedStock(@RequestHeader("Authorization") String authorization,
     		@PathVariable("watchlistId") Long watchlistId,
             @RequestParam(required = true) Long stockId
     		) {
     	try {
+    		//JWT: verify and parse JWT token includes user info
+    		ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
+    		
     		Boolean exists = stockService.findWatchedPair(watchlistId, stockId);
     		if(!exists) {
     			return ResponseEntity.status(HttpStatus.CONFLICT).body("\"stock does not exist in stocklist\"");
@@ -136,7 +135,6 @@ public class StockController {
     		
     	} catch (Exception e) {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-    	}
-    	
+    	}    	
     }
 }

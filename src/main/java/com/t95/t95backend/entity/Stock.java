@@ -56,4 +56,16 @@ public class Stock {
         this.movementPoints = movementPoints;
         this.movementPercentage = movementPercentage;
     }
+
+	public Stock(Long id, String name, String symbol, String price, String movementPoints, String movementPercentage) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.symbol = symbol;
+		this.price = price;
+		this.movementPoints = movementPoints;
+		this.movementPercentage = movementPercentage;
+	}
+    
+    
 }
