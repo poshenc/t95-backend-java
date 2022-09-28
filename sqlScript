@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS positions (
   id serial PRIMARY KEY NOT NULL,
   quantity INT,
   cost_basis DOUBLE NOT NULL,
-  open_date DATE NOT NULL,
+  open_date DATE,
   close_date DATE,
   is_opened BOOLEAN NOT NULL,
   portfolio_id INT DEFAULT NULL,
