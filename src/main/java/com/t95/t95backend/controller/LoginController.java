@@ -51,16 +51,12 @@ public class LoginController {
         	
         	//create sessions
         	ReturnUserInfo sessions = new ReturnUserInfo(user.getName(), user.getId());
-//        	Map<String, Object> sessions = new HashMap<>();
-//        	sessions.put("id", user.getId());
-//        	sessions.put("name", user.getName());
         	
         	//create JWT token
         	String jwtToken = jwtTokenUtils.generateToken(sessions);
         	
         	//add JWT Token to sessions
-        	sessions.setJwt(jwtToken);
-//        	sessions.put("jwt", jwtToken);            
+        	sessions.setJwt(jwtToken);          
             
             return ResponseEntity.status(HttpStatus.OK).body(sessions);
         }

@@ -29,6 +29,10 @@ CREATE TABLE IF NOT EXISTS users (
   email VARCHAR ( 255 ) NOT NULL
 );
 
+insert into users (name,password,email) values ('johnson','77722f04d569b3021df77e8bb2e6b1337813be5c7993d3fef6b172a91d8f1f80','superAdmin@gmail.com');
+insert into users (name,password,email) values ('albert','77722f04d569b3021df77e8bb2e6b1337813be5c7993d3fef6b172a91d8f1f80','admin@gmail.com');
+insert into users (name,password,email) values ('till','77722f04d569b3021df77e8bb2e6b1337813be5c7993d3fef6b172a91d8f1f80','user@gmail.com');
+
 CREATE TABLE IF NOT EXISTS watchlists (
   id serial PRIMARY KEY NOT NULL,
   name VARCHAR ( 255 ) NOT NULL,
@@ -47,10 +51,6 @@ CREATE TABLE IF NOT EXISTS watched_stocks (
 	  REFERENCES stocks (id)
 );
 
-insert into users (name,password,email) values ('Johnson','77722f04d569b3021df77e8bb2e6b1337813be5c7993d3fef6b172a91d8f1f80','superAdmin@gmail.com');
-insert into users (name,password,email) values ('Albert','77722f04d569b3021df77e8bb2e6b1337813be5c7993d3fef6b172a91d8f1f80','admin@gmail.com');
-insert into users (name,password,email) values ('Till','77722f04d569b3021df77e8bb2e6b1337813be5c7993d3fef6b172a91d8f1f80','user@gmail.com');
-
 insert into watchlists (name,user_id) values ('US stock',1);
 insert into watchlists (name,user_id) values ('TW stock',1);
 insert into watchlists (name,user_id) values ('Crypto',1);
@@ -65,3 +65,36 @@ insert into watched_stocks (watchlist_id, stock_id) values ('2','6');
 insert into watched_stocks (watchlist_id, stock_id) values ('3','7');
 insert into watched_stocks (watchlist_id, stock_id) values ('3','8');
 insert into watched_stocks (watchlist_id, stock_id) values ('3','9');
+
+CREATE TABLE IF NOT EXISTS portfolios (
+  id serial PRIMARY KEY NOT NULL,
+  name VARCHAR ( 255 ) NOT NULL,
+  cash INT,
+  user_id INT NOT NULL,
+  FOREIGN KEY (user_id)
+      REFERENCES users (id)
+);
+
+CREATE TABLE IF NOT EXISTS positions (
+  id serial PRIMARY KEY NOT NULL,
+  quantity INT,
+  cost_basis DOUBLE NOT NULL,
+  open_date DATE NOT NULL,
+  close_date DATE,
+  is_opened BOOLEAN NOT NULL,
+  portfolio_id INT DEFAULT NULL,
+  stock_id INT DEFAULT NULL,
+  FOREIGN KEY (portfolio_id)
+      REFERENCES portfolios (id),
+  FOREIGN KEY (stock_id)
+	  REFERENCES stocks (id)
+);  
+
+insert into portfolios (name, cash, user_id) values ('US port', 100, 1);
+insert into portfolios (name, cash, user_id) values ('TW port', 0, 1);
+insert into portfolios (name, cash, user_id) values ('Crypto port', 0, 1);
+insert into portfolios (name, cash, user_id) values ('AL port', 0, 2);
+
+insert into positions (quantity, cost_basis, open_date, is_opened, portfolio_id, stock_id) values (200, 28.71, '2022-03-14', true, 1, 5);
+insert into positions (quantity, cost_basis, open_date, is_opened, portfolio_id, stock_id) values (300, 38.71, '2022-12-14', true, 1, 6);
+insert into positions (quantity, cost_basis, open_date, close_date, is_opened, portfolio_id, stock_id) values (400, 68.71, '2022-4-14', '2022-5-14', false, 1, 7);
