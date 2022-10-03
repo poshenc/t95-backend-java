@@ -44,8 +44,8 @@ public class Position {
     @Column(name = "close_date")
     private Date closeDate;
     
-    @Column(name = "is_opened", nullable = false)
-    private Boolean isOpened;
+    @Column(name = "is_opened")
+    private Boolean isOpened = true;
     
     @Column(name = "portfolio_id", nullable = false)
     private Long portfolioId;
