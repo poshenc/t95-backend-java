@@ -17,8 +17,5 @@ public interface WatchlistRepository extends JpaRepository<Watchlist, Long> {
 
     @Query(value = "select * from watchlists e where e.name = ?1 and e.user_id = ?2", nativeQuery = true)
     Watchlist findByNameAndUserId(String name, Long userId);
-
-    
-
 	
 }

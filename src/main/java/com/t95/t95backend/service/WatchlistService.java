@@ -6,16 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.t95.t95backend.entity.Watchlist;
+import com.t95.t95backend.repository.StockRepository;
 import com.t95.t95backend.repository.WatchlistRepository;
 
 @Service
 public class WatchlistService {
 
     private final WatchlistRepository watchlistRepository;
+    private final StockRepository stockRepository;
 
     @Autowired
-    public WatchlistService(WatchlistRepository watchlistRepository) {
+    public WatchlistService(WatchlistRepository watchlistRepository,StockRepository stockRepository) {
         this.watchlistRepository = watchlistRepository;
+		this.stockRepository = stockRepository;
     }
 
     public List<Watchlist> getWatchlists() { return watchlistRepository.findAll(); }
@@ -47,6 +50,5 @@ public class WatchlistService {
     public Watchlist findByNameAndUserId(String name, Long userId) {
         return watchlistRepository.findByNameAndUserId(name, userId);
     }
-
 
 }

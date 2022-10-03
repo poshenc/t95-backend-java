@@ -19,7 +19,6 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 //	@Query("SELECT s FROM Stock s WHERE s.symbol = ?1")
 	Optional<Stock> findStockBySymbol(String symbol);
     
-
     @Query(value = "SELECT * "
 			+ "FROM watched_stocks ws "
 			+ "LEFT JOIN stocks s "
