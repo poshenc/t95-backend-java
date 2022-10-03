@@ -144,5 +144,7 @@ public class PortfolioController {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     	}
     }
-    
+
+	//add position to portfolio
+	@PostMapping(path = "{portfolioId}/positions")
 }
