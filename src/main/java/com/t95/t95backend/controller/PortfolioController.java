@@ -1,6 +1,7 @@
 package com.t95.t95backend.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.t95.t95backend.bean.PortfolioBean;
 import com.t95.t95backend.entity.Portfolio;
+import com.t95.t95backend.returnBean.ReturnPosition;
 import com.t95.t95backend.returnBean.ReturnUserInfo;
 import com.t95.t95backend.service.PortfolioService;
 import com.t95.t95backend.utils.encryption.JwtTokenUtils;
@@ -121,6 +123,26 @@ public class PortfolioController {
     	} catch (Exception e) {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     	}    	        
+    }
+    
+    // ************************* positions and price and movements in portfolio *******************************
+    
+    //get positions and price of a portfolio
+    @GetMapping(path = "{portfolioId}/positions")
+    public ResponseEntity getPositionAndPrice(@RequestHeader("Authorization") String authorization,
+    		@PathVariable(required = true) Long portfolioId) {
+    	try {
+    		//JWT: verify and parse JWT token includes user info
+    		ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
+    		
+    		List<ReturnPosition> positionAndPrice = portfolioService.getPortfolioPositionAndPrice(portfolioId);
+    		
+    		if(positionAndPrice.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);    		
+    		
+    		return ResponseEntity.status(HttpStatus.OK).body(positionAndPrice);
+    	} catch (Exception e) {
+    		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    	}
     }
     
 }
