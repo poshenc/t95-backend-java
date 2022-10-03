@@ -1,8 +1,10 @@
 package com.t95.t95backend.controller;
 
 import java.util.List;
-import java.util.Map;
 
+import com.t95.t95backend.bean.PositionBean;
+import com.t95.t95backend.entity.Position;
+import com.t95.t95backend.service.PositionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +32,13 @@ import com.t95.t95backend.utils.encryption.JwtTokenUtils;
 public class PortfolioController {
 	
     private final PortfolioService portfolioService;
+	private final PositionService positionService;
     private JwtTokenUtils jwtTokenUtils;
     
     @Autowired
-	public PortfolioController(PortfolioService portfolioService, JwtTokenUtils jwtTokenUtils) {
+	public PortfolioController(PortfolioService portfolioService, PositionService positionService, JwtTokenUtils jwtTokenUtils) {
 		this.portfolioService = portfolioService;
+		this.positionService = positionService;
 		this.jwtTokenUtils = jwtTokenUtils;
 	}
     
@@ -147,4 +151,18 @@ public class PortfolioController {
 
 	//add position to portfolio
 	@PostMapping(path = "{portfolioId}/positions")
+	public ResponseEntity addPosition(@RequestHeader("Authorization") String authorization,
+		@PathVariable (required = true) Long portfolioId, @RequestBody (required = true) PositionBean positionBean) {
+		try {
+			//JWT: verify and parse JWT token includes user info
+			ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
+
+			Position position = new Position(positionBean.getQuantity(), positionBean.getCostBasis(), positionBean.getOpenDate(), portfolioId, positionBean.getStockId());
+			positionService.savePosition(position);
+			return ResponseEntity.status(HttpStatus.OK).body("\"success added position.\"");
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
+	}
 }

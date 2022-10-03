@@ -64,7 +64,12 @@ public class Position {
 		this.portfolioId = portfolioId;
 		this.stockId = stockId;
 	}
-    
-    
 
+    public Position(Long quantity, Double costBasis, Date openDate, Long portfolioId, Long stockId) {
+        this.quantity = quantity;
+        this.costBasis = costBasis;
+        this.openDate = openDate;
+        this.portfolioId = portfolioId;
+        this.stockId = stockId;
+    }
 }

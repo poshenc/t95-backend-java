@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.t95.t95backend.entity.Position;
 import org.springframework.stereotype.Service;
 
 import com.t95.t95backend.entity.Portfolio;
@@ -86,5 +87,4 @@ public class PortfolioService {
 		return returnPosition;
 		
 	}
-
 }
