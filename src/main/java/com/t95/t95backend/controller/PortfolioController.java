@@ -75,13 +75,13 @@ public class PortfolioController {
   //add new portfolio by user
     @PostMapping(path = "")
     public ResponseEntity addNewPortfolio(@RequestHeader("Authorization") String authorization,
-            @RequestParam(required = true) String name
+    		@RequestBody PortfolioBean portfolioBean
             ){
     	try {
     		//JWT: verify and parse JWT token includes user info
     		ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
     		
-    		portfolioService.addPortfolio(userInfo.getId(), name);
+    		portfolioService.addPortfolio(userInfo.getId(), portfolioBean.getName());
     		return ResponseEntity.status(HttpStatus.OK).body("\"success added portfolio.\"");
     	} catch (Exception e) {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -97,7 +97,7 @@ public class PortfolioController {
     		//JWT: verify and parse JWT token includes user info
     		ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
     		
-    		portfolioService.deleteWatchlist(userInfo.getId(), name);
+    		portfolioService.deletePortfolio(userInfo.getId(), name);
     		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("\"success deleted portfolio.\"");
     	} catch (Exception e) {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

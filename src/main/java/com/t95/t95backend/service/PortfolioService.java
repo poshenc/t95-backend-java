@@ -43,7 +43,7 @@ public class PortfolioService {
 	}
 
 
-	public void deleteWatchlist(Long userId, String name) {		
+	public void deletePortfolio(Long userId, String name) {		
 		Portfolio portfolio = portfolioRepository.findByNameAndUserId(name, userId);
     	
         if(portfolio == null) {
