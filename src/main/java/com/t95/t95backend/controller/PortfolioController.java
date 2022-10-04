@@ -1,6 +1,7 @@
 package com.t95.t95backend.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.t95.t95backend.bean.PositionBean;
 import com.t95.t95backend.entity.Position;
@@ -161,6 +162,52 @@ public class PortfolioController {
 			positionService.savePosition(position);
 			return ResponseEntity.status(HttpStatus.OK).body("\"success added position.\"");
 
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
+	}
+	
+	//edit a position in portfolio
+	@PutMapping(path = "{portfolioId}/positions")
+	public ResponseEntity editPosition(@RequestHeader("Authorization") String authorization,
+			@PathVariable (required = true) Long portfolioId, @RequestBody (required = true) PositionBean positionBean) {
+		try {
+			//JWT: verify and parse JWT token includes user info
+			ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
+			
+			Optional<Position> positionEntity = positionService.getPosition(positionBean.getPositionId());
+			if(positionEntity.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+			
+			Position position = positionEntity.get();
+			if(positionBean.getQuantity() != null) { position.setQuantity(positionBean.getQuantity()); }
+			if(positionBean.getCostBasis() != null) { position.setCostBasis(positionBean.getCostBasis()); }
+			if(positionBean.getOpenDate() != null) { position.setOpenDate(positionBean.getOpenDate()); }
+			positionService.savePosition(position);
+			
+			return ResponseEntity.status(HttpStatus.OK).body("\"success edited position.\"");
+			
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
+	}
+	
+	//close position from portfolio
+	@DeleteMapping(path = "{portfolioId}/positions")
+	public ResponseEntity closePosition(@RequestHeader("Authorization") String authorization,
+			@PathVariable (required = true) Long portfolioId, @RequestBody (required = true) PositionBean positionBean) {
+		try {
+			//JWT: verify and parse JWT token includes user info
+			ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
+			
+			Optional<Position> positionEntity = positionService.getPosition(positionBean.getPositionId());
+			if(positionEntity.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+			
+			Position position = positionEntity.get();
+			position.setCloseDate(positionBean.getCloseDate());
+			position.setIsOpened(false);
+			positionService.savePosition(position);
+			
+			return ResponseEntity.status(HttpStatus.OK).body("\"success closed position.\"");
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}

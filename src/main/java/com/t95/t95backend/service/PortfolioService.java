@@ -72,10 +72,10 @@ public class PortfolioService {
 		for (Map<String, Object> p: positions) {
 			System.out.println((Date) p.get("open_date"));
 			ReturnPosition r = new ReturnPosition();
+			r.setPositionId(((Number) p.get("id")).longValue());
 			r.setQuantity(((Number) p.get("quantity")).longValue());
 			r.setCostBasis(Double.valueOf(p.get("cost_basis").toString()));
 			r.setOpenDate(p.get("open_date").toString());
-			r.setStockId(((Number) p.get("id")).longValue());
 			r.setName((String) p.get("name"));
 			r.setSymbol((String) p.get("symbol"));
 			r.setPrice((String) p.get("price"));

@@ -13,22 +13,22 @@ import lombok.ToString;
 @ToString
 public class ReturnPosition {
 
+	private Long positionId;
 	private Long quantity;
 	private Double costBasis;
 	private String openDate;
-	private Long stockId;
 	private String name;
 	private String symbol;
 	private String price;
 	private String movement_points;
 	private String movement_percentage ;	
 	
-	public ReturnPosition(Long quantity, Double costBasis, String openDate, Long stockId, String name, String symbol, String price,
+	public ReturnPosition(Long positionId, Long quantity, Double costBasis, String openDate, String name, String symbol, String price,
 			String movement_points, String movement_percentage) {
+		this.positionId = positionId;
 		this.quantity = quantity;
 		this.costBasis = costBasis;
 		this.openDate = openDate;
-		this.stockId = stockId;
 		this.name = name;
 		this.symbol = symbol;
 		this.price = price;

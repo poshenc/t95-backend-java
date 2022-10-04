@@ -16,7 +16,7 @@ public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
 
 	Portfolio findByUserIdAndName(Long userId, String name);
 
-	@Query(value = "SELECT p.quantity, p.cost_basis, p.open_date, s.id, s.name, s.symbol, s.price, s.movement_points, s.movement_percentage \r\n"
+	@Query(value = "SELECT p.id, p.quantity, p.cost_basis, p.open_date, s.name, s.symbol, s.price, s.movement_points, s.movement_percentage \r\n"
 			+ "FROM positions p \r\n"
 			+ "LEFT JOIN stocks s \r\n"
 			+ "ON p.stock_id = s.id \r\n"
