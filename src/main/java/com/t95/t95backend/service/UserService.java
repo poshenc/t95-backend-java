@@ -5,31 +5,47 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.t95.t95backend.entity.User;
 import com.t95.t95backend.repository.UserRepository;
+import com.t95.t95backend.utils.encryption.SHA256Utils;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private SHA256Utils sha256Utils;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, SHA256Utils sha256Utils) {
         super();
         this.userRepository = userRepository;
+        this.sha256Utils = sha256Utils;
     }
 
-    public List<User> getUsers() { return userRepository.findAll(); }
+    public Optional<User> getUser(Long userId) { return userRepository.findById(userId); }
 
     public void addNewUser(User user) {
-        Optional<User> userOptional = userRepository.findUserByEmail(user.getEmail());
-
-        if (userOptional.isPresent()) {
+        Optional<User> userEmail = userRepository.findUserByEmail(user.getEmail());
+        if (userEmail.isPresent()) {
             throw new IllegalStateException("email taken");
         }
+        
+        Optional<User> userName = userRepository.findUserByName(user.getName());
+        if (userName.isPresent()) {
+            throw new IllegalStateException("name taken");
+        }
+        // sha256 hashed password and salt
+    	try {
+    		String hashedPassword = sha256Utils.hash((String) user.getPassword());    		
+    		user.setPassword(hashedPassword);
+    	} catch (Exception e) {
+    		throw new IllegalStateException("password illegal");
+    	}
         userRepository.save(user);
     }
 
@@ -47,11 +63,21 @@ public class UserService {
                 .orElseThrow(() -> new IllegalStateException("user with id: " + userId + " does not exist!"));
 
         if(name != null && name.length() > 0 && !Objects.equals(user.getName(), name)) {
+        	Optional<User> userName = userRepository.findUserByName(user.getName());
+            if (userName.isPresent()) {
+                throw new IllegalStateException("name taken");
+            }
             user.setName(name);
         }
 
         if(password != null && password.length() > 0 && !Objects.equals(user.getPassword(), password)) {
-            user.setPassword(password);
+        	// sha256 hashed password and salt
+        	try {
+        		String hashedPassword = sha256Utils.hash((String) password);    		
+        		user.setPassword(hashedPassword);
+        	} catch (Exception e) {
+        		throw new IllegalStateException("password illegal");
+        	}
         }
 
         if(email != null && email.length() > 0 && !Objects.equals(user.getEmail(), email)) {
