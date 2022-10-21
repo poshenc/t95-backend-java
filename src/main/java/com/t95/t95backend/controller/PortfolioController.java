@@ -72,6 +72,22 @@ public class PortfolioController {
     	}
     }
     
+    //get single portfolio by portfolioId
+    @GetMapping(path = "/{portfolioId}")
+    public ResponseEntity getPortfolioByPortfolioId(@RequestHeader("Authorization") String authorization,
+    		@PathVariable(required = true) Long portfolioId) {
+    	try {
+    		//JWT: verify and parse JWT token includes user info
+    		ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
+    		
+    		Optional<Portfolio> portfolio = portfolioService.getPortfolioByPortfolioId(portfolioId);
+    		if(portfolio.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+	    	return ResponseEntity.status(HttpStatus.OK).body(portfolio);
+    	} catch (Exception e) {
+    		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    	}
+    }
+    
   //add new portfolio by user
     @PostMapping(path = "")
     public ResponseEntity addNewPortfolio(@RequestHeader("Authorization") String authorization,

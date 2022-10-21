@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.t95.t95backend.entity.Position;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,10 @@ public class PortfolioService {
 
 	public List<Portfolio> getPortfoliosByUserId(Long userId) {
 		return portfolioRepository.findByUserId(userId);
+	}
+
+	public Optional<Portfolio> getPortfolioByPortfolioId(Long portfolioId) {
+		return portfolioRepository.findById(portfolioId);
 	}
 
 
@@ -87,4 +92,5 @@ public class PortfolioService {
 		return returnPosition;
 		
 	}
+
 }
