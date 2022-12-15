@@ -28,8 +28,9 @@ public class UserService {
     }
 
     public Optional<User> getUser(Long userId) { return userRepository.findById(userId); }
+    public Optional<User> getUserByName(String username) { return userRepository.findUserByName(username); }
 
-    public void addNewUser(User user) {
+    public User addNewUser(User user) {
         Optional<User> userEmail = userRepository.findUserByEmail(user.getEmail());
         if (userEmail.isPresent()) {
             throw new IllegalStateException("email taken");
@@ -46,7 +47,7 @@ public class UserService {
     	} catch (Exception e) {
     		throw new IllegalStateException("password illegal");
     	}
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     public void deleteUser(Long userId) {

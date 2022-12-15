@@ -2,6 +2,7 @@ package com.t95.t95backend.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.security.auth.message.AuthException;
@@ -22,9 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.t95.t95backend.entity.User;
+import com.t95.t95backend.returnBean.ReturnBooleanResultBean;
 import com.t95.t95backend.returnBean.ReturnUserInfo;
 import com.t95.t95backend.service.UserService;
 import com.t95.t95backend.utils.encryption.JwtTokenUtils;
+import com.t95.t95backend.utils.encryption.SHA256Utils;
 
 @RestController
 @RequestMapping(path = "api/user")
@@ -32,11 +35,13 @@ public class UserController {
 
     private final UserService userService;
     private JwtTokenUtils jwtTokenUtils;
+    private SHA256Utils sha256Utils;
 
     @Autowired
-    public UserController(UserService userService, JwtTokenUtils jwtTokenUtils) {
+    public UserController(UserService userService, SHA256Utils sha256Utils, JwtTokenUtils jwtTokenUtils) {
         super();
         this.userService = userService;
+        this.sha256Utils=sha256Utils;
         this.jwtTokenUtils=jwtTokenUtils;
     }
 
@@ -57,10 +62,33 @@ public class UserController {
     }
 
     //sign up
-    @PostMapping
-    public ResponseEntity registerNewUser(@RequestBody User user) {
-    	userService.addNewUser(user);
-    	return ResponseEntity.status(HttpStatus.CREATED).body("\"success created user\"");
+    @PostMapping("/signup")
+    public ResponseEntity registerNewUser(@RequestBody User newUser) {
+        try {
+        	User user = userService.addNewUser(newUser);                	
+        	//create sessions
+        	ReturnUserInfo sessions = new ReturnUserInfo(user.getName(), user.getId());        	
+        	//create JWT token
+        	String jwtToken = jwtTokenUtils.generateToken(sessions);        	
+        	//add JWT Token to sessions
+        	sessions.setJwt(jwtToken);            
+            return ResponseEntity.status(HttpStatus.OK).body(sessions);
+        } catch (Exception e) {
+        	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server Error");       	
+        }    	
+    }
+    
+    //find user name duplicate
+    @GetMapping(path = "findDuplicate/{username}")
+    public ResponseEntity findDuplicateUsername(@PathVariable(required = true) String username) throws Exception {
+        ReturnBooleanResultBean returnBooleanResultBean = new ReturnBooleanResultBean();
+        Optional<User> user = userService.getUserByName(username);      
+        if (user.isPresent()) {
+            returnBooleanResultBean.setResult(true);
+        } else {
+            returnBooleanResultBean.setResult(false);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(returnBooleanResultBean);		
     }
 
 //    //delete user
