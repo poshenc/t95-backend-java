@@ -28,6 +28,8 @@ import com.t95.t95backend.returnBean.ReturnUserInfo;
 import com.t95.t95backend.service.PortfolioService;
 import com.t95.t95backend.utils.encryption.JwtTokenUtils;
 
+import io.swagger.annotations.*;
+
 @RestController
 @RequestMapping(path = "api/portfolios")
 public class PortfolioController {
@@ -45,6 +47,11 @@ public class PortfolioController {
     
   //get all portfolios
     @GetMapping(path = "/all")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    code = 200,
+                    message = PORTFOLIORESPONSE)})
+
     public ResponseEntity getPortfolios(@RequestHeader("Authorization") String authorization) {  
     	try {    		
     		//JWT: verify and parse JWT token includes user info
@@ -228,4 +235,14 @@ public class PortfolioController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}
 	}
+	
+    private static final String PORTFOLIORESPONSE = "[\n" +
+            "  {\n" +
+            "    \"id\": \"Number\",\n" +
+            "    \"name\": \"String\",\n" +
+            "    \"cash\": \"Double\",\n" +
+            "    \"userId\": \"Number\"" +
+            "},\n" +
+            "]";
+
 }
