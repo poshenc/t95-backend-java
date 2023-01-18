@@ -104,3 +104,19 @@ insert into positions (quantity, cost_basis, open_date, is_opened, portfolio_id,
 insert into positions (quantity, cost_basis, open_date, is_opened, portfolio_id, stock_id) values (140, 42.71, '2022-12-14', true, 2, 7);
 insert into positions (quantity, cost_basis, open_date, is_opened, portfolio_id, stock_id) values (140, 42.71, '2022-12-14', true, 3, 5);
 insert into positions (quantity, cost_basis, open_date, is_opened, portfolio_id, stock_id) values (140, 42.71, '2022-12-14', true, 3, 4);
+
+CREATE TABLE IF NOT EXISTS portfolio_history (
+  id serial PRIMARY KEY NOT NULL,
+  date DATE NOT NULL,
+  value DOUBLE PRECISION NOT NULL,
+  portfolio_id INT DEFAULT NULL,
+  user_id INT NOT NULL,
+  FOREIGN KEY (portfolio_id)
+      REFERENCES portfolios (id),
+  FOREIGN KEY (user_id)
+      REFERENCES users (id)
+);
+
+insert into portfolio_history (date, value, portfolio_id, user_id) values ('2023-01-17', 120448.64, 1, 1);
+insert into portfolio_history (date, value, portfolio_id, user_id) values ('2023-01-18', 143851.48, 1, 1);
+insert into portfolio_history (date, value, portfolio_id, user_id) values ('2023-01-18', 88888.17, 4, 2);
