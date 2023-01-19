@@ -33,7 +33,7 @@ public class PortfolioHistoryController {
     }
 
     //get all portfolios value by date and by user
-    @GetMapping(path = "/allPortfoliosDate")
+    @GetMapping(path = "/allPortfoliosByDate")
     public ResponseEntity getAllPortfoliosValueByDate(@RequestHeader("Authorization") String authorization, 
     	@RequestParam(required = true) String date) {
     	try {
@@ -49,7 +49,7 @@ public class PortfolioHistoryController {
     }
     
     //get all portfolios values by date range and by user
-    @GetMapping(path = "/allPortfoliosDateBetween")
+    @GetMapping(path = "/allPortfoliosByDateBetween")
     public ResponseEntity getAllPortfoliosValueByDateRange(@RequestHeader("Authorization") String authorization,
     		@RequestParam(required = true) String dateStart, @RequestParam(required = true) String dateEnd) {
     	try {
@@ -66,7 +66,7 @@ public class PortfolioHistoryController {
     }
     
   //get single portfolio value by date and by user
-    @GetMapping(path = "/portfolioDate")
+    @GetMapping(path = "/portfolioByDate")
     public ResponseEntity getPortfolioValueByDateAndPortfolioId(@RequestHeader("Authorization") String authorization, 
     		@RequestParam(required = true) Long portfolioId, @RequestParam(required = true) String date) {
     	try {
@@ -82,7 +82,7 @@ public class PortfolioHistoryController {
     }
     
     //get single portfolio value by date range and by user
-    @GetMapping(path = "/portfolioDateBetween")
+    @GetMapping(path = "/portfolioByDateBetween")
     public ResponseEntity getAllPortfoliosValueByDateRange(@RequestHeader("Authorization") String authorization,
     		@RequestParam(required = true) Long portfolioId, @RequestParam(required = true) String dateStart, @RequestParam(required = true) String dateEnd) {
     	try {
