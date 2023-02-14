@@ -4,32 +4,45 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
+import com.t95.t95backend.EventListener.WebSocketSessions;
 import com.t95.t95backend.entity.Stock;
 import com.t95.t95backend.returnBean.ReturnUserInfo;
 import com.t95.t95backend.service.StockService;
 import com.t95.t95backend.utils.encryption.JwtTokenUtils;
 
+@EnableScheduling
 @RestController
 @RequestMapping(path = "api/stocks")
 public class StockController {
 
     private StockService stockService;
     private JwtTokenUtils jwtTokenUtils;
+    private SimpMessagingTemplate template;
+    private final Logger LOG = LoggerFactory.getLogger(DefaultHandshakeHandler.class);
+    private WebSocketSessions webSocketSessions;
 
     @Autowired
-    public StockController(StockService stockService, JwtTokenUtils jwtTokenUtils) {
+    public StockController(StockService stockService, JwtTokenUtils jwtTokenUtils, SimpMessagingTemplate template, WebSocketSessions webSocketSessions) {
         this.stockService = stockService;
         this.jwtTokenUtils = jwtTokenUtils;
+        this.template = template;
+        this.webSocketSessions = webSocketSessions;
     }
 
     //get all stocks names and id
@@ -63,5 +76,27 @@ public class StockController {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     	}
     }   
+    
+//    @MessageMapping("/message")
+//	@SendTo("/topic/messages")
+//	public SocketResponseMessage getMessage(final Message message) throws InterruptedException {
+//		Thread.sleep(1000);
+//		template.convertAndSend("/topic/messages", "Hello");
+//		return new SocketResponseMessage(HtmlUtils.htmlEscape(message.getMessageContent()));
+//	}
+    
+    //send global
+    @Scheduled(fixedRate = 10000)
+    public void priceUpdate() throws InterruptedException {
+        Thread.sleep(1000);
+        this.template.convertAndSend("/topic/globalIndex", "Incoming Global Stock Price");
+    }
+    
+  //send private
+//    @Scheduled(fixedRate = 10000)
+//    public void privatePriceUpdate() throws InterruptedException {
+//        Thread.sleep(1000);
+////        webSocketSessions.getSessionIdsByUser(user).forEach(sessionId -> template.convertAndSendToUser(sessionId, USER_TOPIC, message));
+//    }
     
 }
