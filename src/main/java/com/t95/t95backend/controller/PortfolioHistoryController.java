@@ -41,7 +41,7 @@ public class PortfolioHistoryController {
     		ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
     		LocalDate localDate = LocalDate.parse(date);
 		
-    		Optional<PortfolioHistory> portfolioValue = portfolioHistoryService.getAllPortfoliosValueByDate(userInfo.getId(), localDate);        
+    		Optional<List<PortfolioHistory>> portfolioValue = portfolioHistoryService.getAllPortfoliosValueByDate(userInfo.getId(), localDate);
     		return ResponseEntity.status(HttpStatus.OK).body(portfolioValue);    		
     	} catch (Exception e) {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -83,7 +83,7 @@ public class PortfolioHistoryController {
     
     //get single portfolio value by date range and by user
     @GetMapping(path = "/portfolioByDateBetween")
-    public ResponseEntity getAllPortfoliosValueByDateRange(@RequestHeader("Authorization") String authorization,
+    public ResponseEntity getPortfolioValueByDateRangeAndPortfolioId(@RequestHeader("Authorization") String authorization,
     		@RequestParam(required = true) Long portfolioId, @RequestParam(required = true) String dateStart, @RequestParam(required = true) String dateEnd) {
     	try {
     		//JWT: verify and parse JWT token includes user info

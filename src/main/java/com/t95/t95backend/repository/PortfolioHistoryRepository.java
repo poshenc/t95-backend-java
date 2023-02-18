@@ -11,7 +11,7 @@ import com.t95.t95backend.entity.PortfolioHistory;
 
 public interface PortfolioHistoryRepository extends JpaRepository<PortfolioHistory, Long> {	
 
-	Optional<PortfolioHistory> findByUserIdAndDate(Long userId, LocalDate date);
+	Optional<List<PortfolioHistory>> findByUserIdAndDate(Long userId, LocalDate date);
 	
 	Optional<List<PortfolioHistory>> findAllByUserIdAndDateBetween(Long userId, LocalDate startDate, LocalDate endDate);
 

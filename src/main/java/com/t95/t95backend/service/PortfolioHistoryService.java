@@ -18,7 +18,7 @@ public class PortfolioHistoryService {
 		this.portfolioHistoryRepository = portfolioHistoryRepository;
 	}
     
-    public Optional<PortfolioHistory> getAllPortfoliosValueByDate(Long userId, LocalDate date) { 
+    public Optional<List<PortfolioHistory>> getAllPortfoliosValueByDate(Long userId, LocalDate date) { 
     	return portfolioHistoryRepository.findByUserIdAndDate(userId, date); 
     }
 

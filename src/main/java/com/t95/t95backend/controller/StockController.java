@@ -1,5 +1,6 @@
 package com.t95.t95backend.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -85,11 +86,17 @@ public class StockController {
 //		return new SocketResponseMessage(HtmlUtils.htmlEscape(message.getMessageContent()));
 //	}
     
-    //send global
+    //send key index prices and movements to all users
     @Scheduled(fixedRate = 10000)
     public void priceUpdate() throws InterruptedException {
+    	String[] mainSymbols = {"DOW J", "IXIC", "GSPC", "USDTWD", "TSLA", "APPL", "2330", "BTC", "ETH"};
+    	List<Stock> data = new ArrayList<Stock>();   		
+		for(String symbol: mainSymbols) {
+			Optional<Stock> stock = stockService.findStockBySymbol(symbol);
+			if(stock.isPresent()) data.add(stock.get());    			
+		}
         Thread.sleep(1000);
-        this.template.convertAndSend("/topic/globalIndex", "Incoming Global Stock Price");
+        this.template.convertAndSend("/topic/globalIndex", data);
     }
     
   //send private
