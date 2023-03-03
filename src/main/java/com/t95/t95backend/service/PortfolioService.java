@@ -37,13 +37,13 @@ public class PortfolioService {
 	}
 
 
-	public void addPortfolio(Long userId, String name) {
+	public void addPortfolio(Long userId, String name, Double cash) {
 		Portfolio exisitngPortfolio = portfolioRepository.findByNameAndUserId(name, userId);
     	if(exisitngPortfolio != null) {
         	throw new IllegalStateException("Duplicated portfolio name!");
         }
     	
-    	Portfolio portfolio = new Portfolio(name, userId);
+    	Portfolio portfolio = new Portfolio(name, cash, userId);
     	portfolioRepository.save(portfolio);		
 	}
 

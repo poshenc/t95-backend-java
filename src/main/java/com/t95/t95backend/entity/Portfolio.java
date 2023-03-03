@@ -50,6 +50,13 @@ public class Portfolio {
 		this.name = name;
 		this.userId = userId;
 	}
+	
+	public Portfolio(String name, Double cash, Long userId) {
+		super();
+		this.name = name;
+		this.cash = cash;
+		this.userId = userId;
+	}
     
     
 

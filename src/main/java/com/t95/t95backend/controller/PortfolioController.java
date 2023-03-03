@@ -104,7 +104,7 @@ public class PortfolioController {
     		//JWT: verify and parse JWT token includes user info
     		ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
     		
-    		portfolioService.addPortfolio(userInfo.getId(), portfolioBean.getName());
+    		portfolioService.addPortfolio(userInfo.getId(), portfolioBean.getName(), portfolioBean.getCash());
     		return ResponseEntity.status(HttpStatus.OK).body("\"success added portfolio.\"");
     	} catch (Exception e) {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -165,7 +165,7 @@ public class PortfolioController {
     		
     		List<ReturnPosition> positionAndPrice = portfolioService.getPortfolioPositionAndPrice(portfolioId);
     		
-    		if(positionAndPrice.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);    		
+//    		if(positionAndPrice.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);    		
     		
     		return ResponseEntity.status(HttpStatus.OK).body(positionAndPrice);
     	} catch (Exception e) {
