@@ -1,5 +1,6 @@
 package com.t95.t95backend.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -215,18 +216,18 @@ public class PortfolioController {
 	}
 	
 	//close position from portfolio
-	@DeleteMapping(path = "{portfolioId}/positions")
+	@DeleteMapping(path = "{portfolioId}/positions/{positionId}")
 	public ResponseEntity closePosition(@RequestHeader("Authorization") String authorization,
-			@PathVariable (required = true) Long portfolioId, @RequestBody (required = true) PositionBean positionBean) {
+			@PathVariable (required = true) Long portfolioId, @PathVariable (required = true) Long positionId) {
 		try {
 			//JWT: verify and parse JWT token includes user info
 			ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
 			
-			Optional<Position> positionEntity = positionService.getPosition(positionBean.getPositionId());
+			Optional<Position> positionEntity = positionService.getPosition(positionId);
 			if(positionEntity.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 			
 			Position position = positionEntity.get();
-			position.setCloseDate(positionBean.getCloseDate());
+			position.setCloseDate(new Date());
 			position.setIsOpened(false);
 			positionService.savePosition(position);
 			

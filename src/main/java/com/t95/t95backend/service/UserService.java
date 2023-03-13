@@ -64,7 +64,7 @@ public class UserService {
                 .orElseThrow(() -> new IllegalStateException("user with id: " + userId + " does not exist!"));
 
         if(name != null && name.length() > 0 && !Objects.equals(user.getName(), name)) {
-        	Optional<User> userName = userRepository.findUserByName(user.getName());
+        	Optional<User> userName = userRepository.findUserByName(name);
             if (userName.isPresent()) {
                 throw new IllegalStateException("name taken");
             }
