@@ -78,6 +78,27 @@ public class StockController {
     	}
     }   
     
+  //get key index prices and movements
+    @GetMapping(path = "/keyIndices")
+    public ResponseEntity getKeyIndices(@RequestHeader("Authorization") String authorization) {
+    	try {
+    		//JWT: verify and parse JWT token includes user info
+    		ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
+    		
+    		String[] mainSymbols = {"DOW J", "IXIC", "GSPC", "USDTWD", "TSLA", "APPL", "2330", "BTC", "ETH"};
+        	List<Stock> data = new ArrayList<Stock>();   		
+    		for(String symbol: mainSymbols) {
+    			Optional<Stock> stock = stockService.findStockBySymbol(symbol);
+    			if(stock.isPresent()) data.add(stock.get());    			
+    		}
+        	
+    		return ResponseEntity.status(HttpStatus.OK).body(data);
+    		
+    	} catch (Exception e) {
+    		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    	}
+    }   
+    
 //    @MessageMapping("/message")
 //	@SendTo("/topic/messages")
 //	public SocketResponseMessage getMessage(final Message message) throws InterruptedException {
