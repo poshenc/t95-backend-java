@@ -122,5 +122,5 @@ insert into portfolio_history (date, value, portfolio_id, user_id) values ('2023
 insert into portfolio_history (date, value, portfolio_id, user_id) values ('2023-01-18', 105876.49, 2, 1);
 insert into portfolio_history (date, value, portfolio_id, user_id) values ('2023-01-18', 43498.14, 3, 1);
 insert into portfolio_history (date, value, portfolio_id, user_id) values ('2023-01-18', 253156.93, 4, 2);
-insert into portfolio_history (date, value, portfolio_id, user_id) values ('2023-01-17', 43000.93.16, 3, 1);
+insert into portfolio_history (date, value, portfolio_id, user_id) values ('2023-01-17', 43000.16, 3, 1);
 insert into portfolio_history (date, value, portfolio_id, user_id) values ('2023-01-17', 105000.46, 2, 1);
