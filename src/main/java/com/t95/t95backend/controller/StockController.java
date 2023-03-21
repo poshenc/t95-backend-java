@@ -1,9 +1,6 @@
 package com.t95.t95backend.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,7 +82,7 @@ public class StockController {
     		//JWT: verify and parse JWT token includes user info
     		ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
     		
-    		String[] mainSymbols = {"DOW J", "IXIC", "GSPC", "USDTWD", "TSLA", "APPL", "2330", "BTC", "ETH"};
+    		String[] mainSymbols = {"^DJI", "^IXIC", "^GSPC", "TWD=X", "TSLA", "AAPL", "2330.TW", "BTC-USD", "ETH-USD"};
         	List<Stock> data = new ArrayList<Stock>();   		
     		for(String symbol: mainSymbols) {
     			Optional<Stock> stock = stockService.findStockBySymbol(symbol);
@@ -110,8 +107,8 @@ public class StockController {
     //send key index prices and movements to all users
     @Scheduled(fixedRate = 60000) //10min = 600000
     public void priceUpdate() throws InterruptedException {
-    	String[] mainSymbols = {"DOW J", "IXIC", "GSPC", "USDTWD", "TSLA", "APPL", "2330", "BTC", "ETH"};
-    	List<Stock> data = new ArrayList<Stock>();   		
+    	String[] mainSymbols = {"^DJI", "^IXIC", "^GSPC", "TWD=X", "TSLA", "AAPL", "2330.TW", "BTC-USD", "ETH-USD"};
+		List<Stock> data = new ArrayList<Stock>();
 		for(String symbol: mainSymbols) {
 			Optional<Stock> stock = stockService.findStockBySymbol(symbol);
 			if(stock.isPresent()) data.add(stock.get());    			
