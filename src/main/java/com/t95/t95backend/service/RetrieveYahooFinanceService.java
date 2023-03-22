@@ -25,9 +25,9 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 @Service
 public class RetrieveYahooFinanceService {
 
-    private final List<String> stocksToRefresh = Arrays.asList("^DJI", "^IXIC", "^GSPC", "^GSPC", "TWD=X", "TSLA", "AAPL", "NVDA", "2330.TW", "1229.TW", "2454.TW", "ETH-USD", "SOL-USD", "BTC-USD");
+    private final List<String> stocksToRefresh = Arrays.asList("^DJI", "^IXIC", "^GSPC", "TWD=X", "TSLA", "AAPL", "NVDA", "2330.TW", "1229.TW", "2454.TW", "ETH-USD", "SOL-USD", "BTC-USD");
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private static final Long refreshPeriodInSeconds = 6000L;
+    private static final Long refreshPeriodInSeconds = 60L;
 
     private StockRepository stockRepository;
 
@@ -75,10 +75,11 @@ public class RetrieveYahooFinanceService {
                     try {
                         YahooFinanceDTO stock = findStock(ticker);
                         String symbol = findSymbol(stock);
-                        double currentPrice = findPrice(stock);
-                        double previousClose = findPreviousClose(stock);
-                        updateStock(symbol, currentPrice, previousClose);
-//                        System.out.println("Symbol:" + symbol + " Now:" + currentPrice + " Previous" + previousClose);
+                        if(stocksToRefresh.contains(symbol)){
+                            double currentPrice = findPrice(stock);
+                            double previousClose = findPreviousClose(stock);
+                            updateStock(symbol, currentPrice, previousClose);
+                        }
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
@@ -112,7 +113,7 @@ public class RetrieveYahooFinanceService {
             String movementPercentage = String.format( "%.2f", calcPercentage );
             stock.setMovementPercentage((isPositive ? "+" : "") + movementPercentage + "%");
 
-            System.out.println("updated stock:" + stock);
+//            System.out.println("updated stock:" + stock);
             stockRepository.save(stock);
         }
 
