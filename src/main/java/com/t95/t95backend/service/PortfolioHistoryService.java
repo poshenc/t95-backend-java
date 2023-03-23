@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.t95.t95backend.entity.PortfolioHistory;
@@ -34,5 +35,13 @@ public class PortfolioHistoryService {
 	public Optional<List<PortfolioHistory>> getPortfolioValueByDateRangeAndPortfolioId(Long userId, Long portfolioId,
 			LocalDate startDate, LocalDate endDate) {
 		return portfolioHistoryRepository.findAllByUserIdAndPortfolioIdAndDateBetween(userId, portfolioId, startDate, endDate); 
+	}
+
+	public PortfolioHistory savePortfolioHistory(PortfolioHistory portfolioHistory) {
+		try {
+			return this.portfolioHistoryRepository.save(portfolioHistory);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityViolationException("Something went wrong.");
+		}
 	}
 }
