@@ -54,11 +54,6 @@ public class RetrieveYahooFinanceService {
         return price;
     }
 
-    public String findSymbol(final YahooFinanceDTO stock) {
-        String symbol = stock.getChart().getResult().get(0).getMeta().getSymbol();
-        return symbol;
-    }
-
     public Double findPreviousClose(final YahooFinanceDTO stock) {
         double previousClose = stock.getChart().getResult().get(0).getMeta().getPreviousClose();
         return previousClose;
@@ -73,10 +68,10 @@ public class RetrieveYahooFinanceService {
                     try {
                         YahooFinanceDTO stock = findStock(ticker);
                         if (stock != null) {
-                            String symbol = findSymbol(stock);
                             double currentPrice = findPrice(stock);
                             double previousClose = findPreviousClose(stock);
-                            updateStock(symbol, currentPrice, previousClose);
+//                            System.out.println("Fetched...:" + ticker + "price: " + currentPrice + " from Yahoo Finance at: " + LocalTime.now());
+                            updateStock(ticker, currentPrice, previousClose);
                         }
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -111,8 +106,7 @@ public class RetrieveYahooFinanceService {
             Double calcPercentage = ((currentPrice - previousClose) / previousClose) * 100;
             String movementPercentage = String.format( "%.2f", calcPercentage );
             stock.setMovementPercentage((isPositive ? "+" : "") + movementPercentage + "%");
-
-//            System.out.println("updated stock:" + stock);
+//            System.out.println("Success updateStock:" + symbol + "price: " + currentPrice + " from Yahoo Finance at: " + LocalTime.now());
             stockRepository.save(stock);
         }
 
