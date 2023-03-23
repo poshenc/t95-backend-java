@@ -2,16 +2,14 @@ package com.t95.t95backend.service;
 
 import com.t95.t95backend.dto.YahooFinanceDTO;
 import com.t95.t95backend.entity.Stock;
-import com.t95.t95backend.entity.User;
 import com.t95.t95backend.repository.StockRepository;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.*;
 
-import java.text.DecimalFormat;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -41,8 +39,8 @@ public class RetrieveYahooFinanceService {
             RestTemplate restTemplate = new RestTemplate();
             YahooFinanceDTO stock = restTemplate.getForObject(endpoint, YahooFinanceDTO.class);
             return stock;
-        } catch(HttpStatusCodeException e) {
-            System.out.println(e.getResponseBodyAsString());
+        } catch (Exception e) {
+            System.out.println("Failed to fetch data:" + ticker + " from Yahoo Finance at: " + LocalTime.now());
         }
         return null;
     }
@@ -74,8 +72,8 @@ public class RetrieveYahooFinanceService {
                 stocksToRefresh.forEach((ticker) -> {
                     try {
                         YahooFinanceDTO stock = findStock(ticker);
-                        String symbol = findSymbol(stock);
-                        if(stocksToRefresh.contains(symbol)){
+                        if (stock != null) {
+                            String symbol = findSymbol(stock);
                             double currentPrice = findPrice(stock);
                             double previousClose = findPreviousClose(stock);
                             updateStock(symbol, currentPrice, previousClose);
@@ -86,6 +84,7 @@ public class RetrieveYahooFinanceService {
                     }
                 }), 0, refreshPeriodInSeconds, SECONDS);
     }
+
 
 
     @Transactional

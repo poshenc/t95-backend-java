@@ -6,10 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.t95.t95backend.bean.LoginBean;
 import com.t95.t95backend.entity.User;
@@ -19,7 +16,7 @@ import com.t95.t95backend.utils.encryption.JwtTokenUtils;
 import com.t95.t95backend.utils.encryption.SHA256Utils;
 
 @RestController
-@RequestMapping("api/login")
+@RequestMapping("")
 public class LoginController {
     private UserService userService;
     private SHA256Utils sha256Utils;
@@ -32,7 +29,7 @@ public class LoginController {
         this.jwtTokenUtils=jwtTokenUtils;
     }
 
-    @PostMapping("/")
+    @PostMapping("api/login")
     public ResponseEntity login(@RequestBody LoginBean loginBean) {    	
     	// sha256 hashed password and salt
     	String hashedPassword = "";
@@ -61,5 +58,10 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.OK).body(sessions);
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wrong credentials");
+    }
+
+    @GetMapping(value = "/")
+    public ResponseEntity healthCheck() {
+        return ResponseEntity.ok("Health Check: Server is OK.");
     }
 }
