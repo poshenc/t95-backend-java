@@ -1,11 +1,11 @@
-package com.t95.t95backend.service;
+package com.t95.t95backend.schedulingTasks;
 
 import com.t95.t95backend.dto.YahooFinanceDTO;
 import com.t95.t95backend.entity.Stock;
 import com.t95.t95backend.repository.StockRepository;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.*;
 
@@ -20,16 +20,16 @@ import java.util.stream.Collectors;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-@Service
-public class RetrieveYahooFinanceService {
+@Component
+public class RetrieveYahooFinance {
 
     private final List<String> stocksToRefresh = Arrays.asList("^DJI", "^IXIC", "^GSPC", "TWD=X", "TSLA", "AAPL", "NVDA", "2330.TW", "1229.TW", "2454.TW", "ETH-USD", "SOL-USD", "BTC-USD");
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private static final Long refreshPeriodInSeconds = 60L;
+    private static final Long refreshPeriodInSeconds = 6000L;
 
     private StockRepository stockRepository;
 
-    public RetrieveYahooFinanceService(StockRepository stockRepository) {
+    public RetrieveYahooFinance(StockRepository stockRepository) {
         this.stockRepository = stockRepository;
     }
 

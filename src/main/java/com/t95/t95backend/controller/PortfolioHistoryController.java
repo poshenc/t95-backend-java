@@ -1,8 +1,8 @@
 package com.t95.t95backend.controller;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,6 +64,29 @@ public class PortfolioHistoryController {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     	}    
     }
+
+	//get the earliest date of a portfolio and by user and portfolio id
+	@GetMapping(path = "/portfolioBeginDate")
+	public ResponseEntity getEarliestDateOfPortfolioByPortfolioId(@RequestHeader("Authorization") String authorization,
+																@RequestParam(required = true) Long portfolioId) {
+		try {
+			//JWT: verify and parse JWT token includes user info
+			ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
+
+			Date date = portfolioHistoryService.findEarliestDateOfPortfolio(userInfo.getId(), portfolioId);
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			String strDate = formatter.format(date);
+			Map<String, String> res = new HashMap<String, String>()
+			{
+				{
+					put("date", strDate);
+				}
+			};
+			return ResponseEntity.status(HttpStatus.OK).body(res);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
+	}
     
   //get single portfolio value by date and by user
     @GetMapping(path = "/portfolioByDate")
@@ -91,8 +114,9 @@ public class PortfolioHistoryController {
     		LocalDate startDate = LocalDate.parse(dateStart);
     		LocalDate endDate = LocalDate.parse(dateEnd);
 		
-    		Optional<List<PortfolioHistory>> portfolioValues = portfolioHistoryService.getPortfolioValueByDateRangeAndPortfolioId(userInfo.getId(), portfolioId, startDate, endDate);       
-    		return ResponseEntity.status(HttpStatus.OK).body(portfolioValues);    		
+    		Optional<List<PortfolioHistory>> portfolioValues = portfolioHistoryService.getPortfolioValueByDateRangeAndPortfolioId(userInfo.getId(), portfolioId, startDate, endDate);
+			System.out.println("result" + portfolioValues);
+			return ResponseEntity.status(HttpStatus.OK).body(portfolioValues);
     	} catch (Exception e) {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     	}    

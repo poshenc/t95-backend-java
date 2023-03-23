@@ -1,6 +1,7 @@
 package com.t95.t95backend.service;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,10 @@ public class PortfolioHistoryService {
     public Optional<List<PortfolioHistory>> getAllPortfoliosValueByDateRange(Long userId, LocalDate startDate, LocalDate endDate) { 
     	return portfolioHistoryRepository.findAllByUserIdAndDateBetween(userId, startDate, endDate); 
     }
+
+	public Date findEarliestDateOfPortfolio(Long userId, Long portfolioId) {
+		return portfolioHistoryRepository.findEarliestDateOfPortfolio(userId, portfolioId);
+	}
 
 	public Optional<PortfolioHistory> getPortfolioValueByDateAndPortfolioId(Long userId, Long portfolioId,
 			LocalDate date) {
