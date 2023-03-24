@@ -5,20 +5,21 @@ import com.t95.t95backend.entity.PortfolioHistory;
 import com.t95.t95backend.returnBean.ReturnPosition;
 import com.t95.t95backend.service.PortfolioHistoryService;
 import com.t95.t95backend.service.PortfolioService;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalTime;
 import java.util.List;
 
 @EnableScheduling
 @Component
 public class StorePortfolioValueTask {
+
+    private static final Logger logger = LoggerFactory.getLogger(RetrieveYahooFinance.class);
 
     private final PortfolioService portfolioService;
     private final PortfolioHistoryService portfolioHistoryService;
@@ -51,5 +52,8 @@ public class StorePortfolioValueTask {
             PortfolioHistory portfolioHistory = new PortfolioHistory(LocalDate.now().minusDays(1L), portfolioSum, portfolio.getId(), portfolio.getUserId());
             portfolioHistoryService.savePortfolioHistory(portfolioHistory);
         };
+
+        logger.info("Successfully store all portfolios value at midnight. Time: " + LocalTime.now());
     }
+
 }

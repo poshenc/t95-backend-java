@@ -26,7 +26,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 public class RetrieveYahooFinance {
 
     private static final Logger logger = LoggerFactory.getLogger(RetrieveYahooFinance.class);
-    private final List<String> stocksToRefresh = Arrays.asList("^DEEJI", "^IXIC", "^GSPC", "TWD=X", "TSLA", "AAPL", "NVDA", "2330.TW", "1229.TW", "2454.TW", "ETH-USD", "SOL-USD", "BTC-USD");
+    private final List<String> stocksToRefresh = Arrays.asList("^DJI", "^IXIC", "^GSPC", "TWD=X", "TSLA", "AAPL", "NVDA", "2330.TW", "1229.TW", "2454.TW", "ETH-USD", "SOL-USD", "BTC-USD");
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private static final Long refreshPeriodInSeconds = 30L;
 
