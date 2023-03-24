@@ -3,6 +3,8 @@ package com.t95.t95backend.schedulingTasks;
 import com.t95.t95backend.dto.YahooFinanceDTO;
 import com.t95.t95backend.entity.Stock;
 import com.t95.t95backend.repository.StockRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -23,9 +25,10 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 @Component
 public class RetrieveYahooFinance {
 
-    private final List<String> stocksToRefresh = Arrays.asList("^DJI", "^IXIC", "^GSPC", "TWD=X", "TSLA", "AAPL", "NVDA", "2330.TW", "1229.TW", "2454.TW", "ETH-USD", "SOL-USD", "BTC-USD");
+    private static final Logger logger = LoggerFactory.getLogger(RetrieveYahooFinance.class);
+    private final List<String> stocksToRefresh = Arrays.asList("^DEEJI", "^IXIC", "^GSPC", "TWD=X", "TSLA", "AAPL", "NVDA", "2330.TW", "1229.TW", "2454.TW", "ETH-USD", "SOL-USD", "BTC-USD");
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private static final Long refreshPeriodInSeconds = 6000L;
+    private static final Long refreshPeriodInSeconds = 30L;
 
     private StockRepository stockRepository;
 
@@ -40,7 +43,8 @@ public class RetrieveYahooFinance {
             YahooFinanceDTO stock = restTemplate.getForObject(endpoint, YahooFinanceDTO.class);
             return stock;
         } catch (Exception e) {
-            System.out.println("Failed to fetch data:" + ticker + " from Yahoo Finance at: " + LocalTime.now());
+            logger.error("******YFiannce****** Failed to fetch ticker:" + ticker + " from Yahoo Finance at: " + LocalTime.now());
+            logger.error("******YFiannce****** Error message:" + e);
         }
         return null;
     }
@@ -86,7 +90,8 @@ public class RetrieveYahooFinance {
     public void updateStock(String symbol, double currentPrice, double previousClose) {
         Optional<Stock> optionalStock = stockRepository.findStockBySymbol(symbol);
         if(optionalStock.isEmpty() || !(currentPrice > 0) || !(previousClose > 0)) {
-            throw new IllegalStateException("something wrong with Yahoo Finance data");
+            logger.error("******YFiannce****** Something wrong with Yahoo Finance data, check updateStock()");
+            return;
         }
 
         Stock stock = stockRepository.findById(optionalStock.get().getId())

@@ -30,7 +30,7 @@ public class StorePortfolioValueTask {
 
 
 //    @EventListener(ApplicationReadyEvent.class) //fire task on app init
-    @Scheduled(cron="0 5 1 * * ?", zone="Asia/Taipei") //fire task at 1:05am TPE time every day
+    @Scheduled(cron="0 5 1 * * ?", zone="Asia/`Taipei`") //fire task at 1:05am TPE time every day
     public void storePortfolioValueAtMidnight() {
         //1. get all portfolios (portfolio_id + user_id + cash)
         List<Portfolio> portfolios = portfolioService.getPortfolios();
