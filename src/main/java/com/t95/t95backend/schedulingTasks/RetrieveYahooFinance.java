@@ -5,8 +5,10 @@ import com.t95.t95backend.entity.Stock;
 import com.t95.t95backend.repository.StockRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.*;
@@ -29,10 +31,12 @@ public class RetrieveYahooFinance {
     private final List<String> stocksToRefresh = Arrays.asList("^DJI", "^IXIC", "^GSPC", "TWD=X", "TSLA", "AAPL", "NVDA", "2330.TW", "1229.TW", "2454.TW", "ETH-USD", "SOL-USD", "BTC-USD");
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private static final Long refreshPeriodInSeconds = 30L;
+    @Value("${spring.profiles.active:Unknown}")
+    private String activeProfile;
 
     private StockRepository stockRepository;
 
-    public RetrieveYahooFinance(StockRepository stockRepository) {
+    public RetrieveYahooFinance(StockRepository stockRepository, Environment env) {
         this.stockRepository = stockRepository;
     }
 
@@ -67,21 +71,24 @@ public class RetrieveYahooFinance {
     //scheduled executor service with one thread pool
     @EventListener(ApplicationReadyEvent.class)
     public void shouldRefreshStockTableEvery100Minutes() throws InterruptedException {
-        scheduler.scheduleAtFixedRate(() ->
-                stocksToRefresh.forEach((ticker) -> {
-                    try {
-                        YahooFinanceDTO stock = findStock(ticker);
-                        if (stock != null) {
-                            double currentPrice = findPrice(stock);
-                            double previousClose = findPreviousClose(stock);
+        if(activeProfile.equals("prod")) {
+            scheduler.scheduleAtFixedRate(() ->
+                    stocksToRefresh.forEach((ticker) -> {
+                        try {
+                            YahooFinanceDTO stock = findStock(ticker);
+                            if (stock != null) {
+                                double currentPrice = findPrice(stock);
+                                double previousClose = findPreviousClose(stock);
 //                            System.out.println("Fetched...:" + ticker + "price: " + currentPrice + " from Yahoo Finance at: " + LocalTime.now());
-                            updateStock(ticker, currentPrice, previousClose);
+                                updateStock(ticker, currentPrice, previousClose);
+                            }
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
                         }
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }), 0, refreshPeriodInSeconds, SECONDS);
+                    }), 0, refreshPeriodInSeconds, SECONDS);
+        }
+
     }
 
 

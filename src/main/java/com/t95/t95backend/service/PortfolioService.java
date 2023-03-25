@@ -75,7 +75,6 @@ public class PortfolioService {
 		List<Map> positions = portfolioRepository.getPortfolioPositionAndPrice(portfolioId);
 		
 		for (Map<String, Object> p: positions) {
-			System.out.println((Date) p.get("open_date"));
 			ReturnPosition r = new ReturnPosition();
 			r.setPositionId(((Number) p.get("id")).longValue());
 			r.setQuantity(((Number) p.get("quantity")).longValue());

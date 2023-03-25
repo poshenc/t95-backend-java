@@ -115,7 +115,7 @@ public class PortfolioHistoryController {
     		LocalDate endDate = LocalDate.parse(dateEnd);
 		
     		Optional<List<PortfolioHistory>> portfolioValues = portfolioHistoryService.getPortfolioValueByDateRangeAndPortfolioId(userInfo.getId(), portfolioId, startDate, endDate);
-			System.out.println("result" + portfolioValues);
+//			System.out.println("result" + portfolioValues);
 			return ResponseEntity.status(HttpStatus.OK).body(portfolioValues);
     	} catch (Exception e) {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
