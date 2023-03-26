@@ -105,7 +105,7 @@ public class StockController {
 //	}
     
     //send key index prices and movements to all users
-    @Scheduled(fixedRate = 60000) //10min = 600000
+    @Scheduled(fixedRate = 10000) //10min = 600000
     public void priceUpdate() throws InterruptedException {
     	String[] mainSymbols = {"^DJI", "^IXIC", "^GSPC", "TWD=X", "TSLA", "AAPL", "2330.TW", "BTC-USD", "ETH-USD"};
 		List<Stock> data = new ArrayList<Stock>();

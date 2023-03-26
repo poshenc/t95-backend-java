@@ -71,9 +71,10 @@ public class PortfolioController {
     	try {
     		//JWT: verify and parse JWT token includes user info
     		ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
-    		
+			System.out.println("portfolios");
     		List<Portfolio> portfolios = portfolioService.getPortfoliosByUserId(userInfo.getId());
-    		if(portfolios.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+			System.out.println(portfolios);
+//    		if(portfolios.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 	    	return ResponseEntity.status(HttpStatus.OK).body(portfolios);
     	} catch (Exception e) {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

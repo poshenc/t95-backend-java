@@ -61,7 +61,7 @@ public class WatchlistController {
 			ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
 			
 	    	List<Watchlist> watchlists = watchlistService.getWatchlistsByUserId(userInfo.getId());
-	    		    	if(watchlists.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);    	
+//			if(watchlists.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 	    	return ResponseEntity.status(HttpStatus.OK).body(watchlists);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
