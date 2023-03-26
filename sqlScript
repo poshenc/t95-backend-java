@@ -20,6 +20,34 @@ INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) value
 INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Etherum','ETH-USD', '1629.25', '+118.86', '+6.40%');
 INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Soloran','SOL-USD', '32.41', '-1.55', '-5.43%');
 INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Bitcoin','BTC-USD', '19223.13', '+475.92', '+2.55%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Realty Income Corporation','O','31581.30','+436.28', '+1.40%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Bitcoin CAD','BTC-CAD', '11791.90','+247.14', '+2.38%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('QuantumScape Corporation','QS','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('日月光','3711.TW','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('XRP USD','XRP-USD','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('iShares 20+ Year Treasury Bond ETF','TLT','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Tilray Brands, Inc.','TLRY','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('UnitedHealth Group Incorporated','UNH','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('American Express Company','AXP','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Starbucks Corporation','SBUX','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Adobe Inc.','ADBE','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Airbnb, Inc.','ABNB','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Taiwan Semiconductor Manufacturing Company Limited','TSM','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('大立光','3008.TW','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('研華','2395.TW','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Datasea Inc.','DTSS','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Dow Jones ETF','DIA','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Short Nasdaq ETF x3','SQQQ','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Nasdaq ETF','QQQ','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Short Dow30','SDOW','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('iShares Semiconductor ETF','SOXX','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('British American Tobacco','BTI','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Simon Property Group','SPG','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Investment Grade Corporate Bond ETF','LQD','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('High Yield Corporate Bond','HYG','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('S&P 500 VIX Short-Term','VXX','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Marathon Petroleum Corporation','MPC','3979.87','+71.68', '+1.83%');
+INSERT INTO stocks (name,symbol,price,movement_points,movement_percentage) values ('Berkshire Hathaway Inc.','BRK-B','3979.87','+71.68', '+1.83%');
 
 
 CREATE TABLE IF NOT EXISTS users (
