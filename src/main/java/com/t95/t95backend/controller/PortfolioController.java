@@ -153,6 +153,32 @@ public class PortfolioController {
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     	}    	        
     }
+
+	//only add cash to cash balance
+	@PostMapping(path = "/{portfolioId}/cash")
+	public ResponseEntity addCashToPortfolio(@RequestHeader("Authorization") String authorization,
+										@PathVariable(required = true) Long portfolioId, @RequestBody PortfolioBean portfolioBean
+	){
+		try {
+			//JWT: verify and parse JWT token includes user info
+			ReturnUserInfo userInfo = jwtTokenUtils.getJwtInfo(authorization);
+
+			Optional<Portfolio> portfolio = portfolioService.getPortfolioByPortfolioId(portfolioId);
+
+			if(portfolioBean.getCash() != null) {
+				Portfolio editPortfolio = portfolio.get();
+				Double currentCashBalance = editPortfolio.getCash();
+				editPortfolio.setCash(currentCashBalance + portfolioBean.getCash());
+				Portfolio newPortfolio = portfolioService.savePortfolio(editPortfolio);
+				System.out.println("new" + newPortfolio);
+			}
+
+
+			return ResponseEntity.status(HttpStatus.OK).body("\"success added cash balance.\"");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
+	}
     
     // ************************* positions and price and movements in portfolio *******************************
     

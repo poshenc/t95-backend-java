@@ -14,6 +14,9 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 	
     @Query(value = "select s.id, s.name, s.symbol from stocks s ", nativeQuery = true)
     List<Map> getStocksList();
+
+	@Query(value = "select s.symbol from stocks s ", nativeQuery = true)
+	List<String> getSymbolsList();
     
     
 //	@Query("SELECT s FROM Stock s WHERE s.symbol = ?1")

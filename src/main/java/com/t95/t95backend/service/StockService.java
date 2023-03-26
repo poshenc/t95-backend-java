@@ -21,6 +21,14 @@ public class StockService {
     public List<Map> getStocksList() {
         return stockRepository.getStocksList();
     }
+
+	public List<String> getSymbolsList() {
+		return stockRepository.getSymbolsList();
+	}
+
+	public Optional<Stock> findById(Long id) {
+		return stockRepository.findById(id);
+	}
     
 	public Optional<Stock> findStockBySymbol(String symbol) {
 		return stockRepository.findStockBySymbol(symbol);
@@ -42,7 +50,8 @@ public class StockService {
 		stockRepository.deleteWatchedStock(watchlistId, stockId);		
 	}
 
-	
 
-
+	public void updateStock(Stock stock) {
+		stockRepository.save(stock);
+	}
 }

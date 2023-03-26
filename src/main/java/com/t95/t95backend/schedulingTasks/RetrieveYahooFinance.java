@@ -3,6 +3,7 @@ package com.t95.t95backend.schedulingTasks;
 import com.t95.t95backend.dto.YahooFinanceDTO;
 import com.t95.t95backend.entity.Stock;
 import com.t95.t95backend.repository.StockRepository;
+import com.t95.t95backend.service.StockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,16 +29,15 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 public class RetrieveYahooFinance {
 
     private static final Logger logger = LoggerFactory.getLogger(RetrieveYahooFinance.class);
-    private final List<String> stocksToRefresh = Arrays.asList("^DJI", "^IXIC", "^GSPC", "TWD=X", "TSLA", "AAPL", "NVDA", "2330.TW", "1229.TW", "2454.TW", "ETH-USD", "SOL-USD", "BTC-USD");
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private static final Long refreshPeriodInSeconds = 30L;
+    private static final Long refreshPeriodInSeconds = 60L;
     @Value("${spring.profiles.active:Unknown}")
     private String activeProfile;
 
-    private StockRepository stockRepository;
+    private StockService stockService;
 
-    public RetrieveYahooFinance(StockRepository stockRepository, Environment env) {
-        this.stockRepository = stockRepository;
+    public RetrieveYahooFinance(StockService stockService, Environment env) {
+        this.stockService = stockService;
     }
 
     public YahooFinanceDTO findStock(final String ticker) {
@@ -72,6 +72,7 @@ public class RetrieveYahooFinance {
     @EventListener(ApplicationReadyEvent.class)
     public void shouldRefreshStockTableEvery100Minutes() throws InterruptedException {
         if(activeProfile.equals("prod")) {
+            List<String> stocksToRefresh = stockService.getSymbolsList();
             scheduler.scheduleAtFixedRate(() ->
                     stocksToRefresh.forEach((ticker) -> {
                         try {
@@ -95,13 +96,13 @@ public class RetrieveYahooFinance {
 
     @Transactional
     public void updateStock(String symbol, double currentPrice, double previousClose) {
-        Optional<Stock> optionalStock = stockRepository.findStockBySymbol(symbol);
+        Optional<Stock> optionalStock = stockService.findStockBySymbol(symbol);
         if(optionalStock.isEmpty() || !(currentPrice > 0) || !(previousClose > 0)) {
             logger.error("******YFiannce****** Something wrong with Yahoo Finance data, check updateStock()");
             return;
         }
 
-        Stock stock = stockRepository.findById(optionalStock.get().getId())
+        Stock stock = stockService.findById(optionalStock.get().getId())
                 .orElseThrow(() -> new IllegalStateException("stock with id: " + optionalStock.get().getId() + " does not exist!"));
 
         String price = String.format( "%.2f", currentPrice );
@@ -119,7 +120,7 @@ public class RetrieveYahooFinance {
             String movementPercentage = String.format( "%.2f", calcPercentage );
             stock.setMovementPercentage((isPositive ? "+" : "") + movementPercentage + "%");
 //            System.out.println("Success updateStock:" + symbol + "price: " + currentPrice + " from Yahoo Finance at: " + LocalTime.now());
-            stockRepository.save(stock);
+            stockService.updateStock(stock);
         }
 
     }
